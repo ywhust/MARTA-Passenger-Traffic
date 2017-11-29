@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6 lt8"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7 lt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8 lt8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="UTF-8" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
+    <title>MARTA PROJECT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login and Registration Form with HTML5 and CSS3" />
+    <meta name="keywords" content="html5, css3, form, switch, animation, :target, pseudo-class" />
+    <meta name="author" content="Codrops" />
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="css/login.css" />
+    <link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>MARTA PROJECT</h1>
+        </header>
+        <section>
+            <div id="container_demo">
+                <a class="hiddenanchor" id="toregister"></a>
+                <a class="hiddenanchor" id="tologin"></a>
+                <div id="wrapper">
+                    <div id="login" class="animate form">
+                        <form id="sign-in-form" autocomplete="on">
+                            <h1>Passenger Log In</h1>
+                            <p>
+                                <label for="username" class="uname" data-icon="u">Username </label>
+                                <input id="username" name="username" required="required" type="text" placeholder="username" />
+                            </p>
+                            <p>
+                                <label for="password" class="youpasswd" data-icon="p">Password </label>
+                                <input id="password" name="password" required="required" type="password" placeholder="password" />
+                            </p>
+                            <div id="signin-error-div" class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9" style="color:#ff0000">
+                                    <span id="error-msg">Invalid username or password</span>
+                                </div>
+                            </div>
+                            <p class="login button">
+                                <input id="sign-in" type="submit" value="Login" />
+                            </p>
+
+                            <p>
+                                Not a member yet ?
+                                <a href="#toregister" class="register">Register</a>
+                            </p>
+                        </form>
+                    </div>
+
+                    <div id="register" class="animate form">
+                        <form action="mysuperscript.php" autocomplete="on">
+                            <h1>New Passenger Registration</h1>
+                            <p>
+                                <label for="usernamesignup" class="uname" data-icon="u">Username</label>
+                                <input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="username" />
+                            </p>
+                            <p>
+                                <label for="emailsignup" class="youmail" data-icon="e">Email</label>
+                                <input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="email" />
+                            </p>
+                            <p>
+                                <label for="passwordsignup" class="youpasswd" data-icon="p">Password </label>
+                                <input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="password" />
+                            </p>
+                            <p>
+                                <label for="passwordsignup_confirm" class="youpasswd" data-icon="p">Confirm Password </label>
+                                <input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="confirm password"
+                                />
+                            </p>
+                            <div id="breezecard_opt_div">
+                                <div>
+                                    <input type="checkbox">Get a new Breeze Card</input>
+                                </div>
+                                <div>
+                                    <input type="checkbox" checked>Use my existing Breeze Card</input>
+                                </div>
+                                <div>
+                                    <label for="breeze_card_opt" class="breezcardnum">Breeze Card Number</label>
+                                    <input id="breezcard_num" name="breezcard_num" required="required" type="breezcard_num" placeholder="16 digit number" />
+                                </div>
+                            </div>
+                            <p class="signin button">
+                                <input type="submit" value="Create Account" />
+                            </p>
+                            <p>
+                                Already a member ?
+                                <a href="#tologin" class="register">Sign In</a>
+                            </p>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="js/login.js"></script>
+
+</body>
+
+</html>
