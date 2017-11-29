@@ -73,7 +73,7 @@ router.get('/get_station/:id', function (req, res) {
         });
 });
 
-// route to get a list of users baed on a given partial user name
+// route to get a list of users based on a given partial user name
 router.get('/get_user/:id', function (req, res) {
     var id = req.params.id;
     console.log('user id:' + id);
@@ -84,6 +84,30 @@ router.get('/get_user/:id', function (req, res) {
             res.send(JSON.stringify(rows));
             res.end();
         });
+});
+
+// get breezecards based on minimum value
+router.get('/get_min/:from', function(req, res) {
+    var from = req.params.from;
+    console.log('value from:' + from);
+    // query database
+    con.query('SELECT * FROM Breezecard WHERE Value >=?', + from,
+        function(err, rows, fields) {
+        console.log(rows); // results contains rows returned by server
+        res.send(JSON.stringify(rows));
+        res.end();
+    });
+});
+
+router.get('/get_min', function(req, res) {
+    
+        // query database
+        con.query('SELECT * FROM Breezecard;',
+           function(err, rows, fields) {
+            console.log(rows); // results contains rows returned by server
+            res.send(JSON.stringify(rows));
+            res.end();
+           });
 });
 
 // apply the routes to our application
