@@ -60,7 +60,7 @@ router.get('/get_breeze_card', auth.auth, function (req, res) {
 });
 
 // route to get a list of stations
-router.get('/get_station/:id', function (req, res) {
+router.get('/get_station/:id', auth.auth, function (req, res) {
     var id = req.params.id;
     console.log('station id: ' + id);
 
@@ -74,7 +74,7 @@ router.get('/get_station/:id', function (req, res) {
 });
 
 // route to get a list of users based on a given partial user name
-router.get('/get_user/:id', function (req, res) {
+router.get('/get_user/:id', auth.auth, function (req, res) {
     var id = req.params.id;
     console.log('user id:' + id);
     // query database
@@ -86,8 +86,31 @@ router.get('/get_user/:id', function (req, res) {
         });
 });
 
+router.get('/get_owner/:id', auth.auth, function(req, res) {
+    var id = req.params.id;
+    console.log('user id:' + id);
+    // query database
+    con.query('SELECT * FROM Breezecard where belongsTo like?', '%' + id + '%',
+       function(err, rows, fields) {
+        console.log(rows); // results contains rows returned by server
+        res.send(JSON.stringify(rows));
+        res.end();
+       });
+});
+
+router.get('/get_owner', auth.auth, function(req, res) {
+
+    // query database
+    con.query('SELECT * FROM Breezecard;',
+       function(err, rows, fields) {
+        console.log(rows); // results contains rows returned by server
+        res.send(JSON.stringify(rows));
+        res.end();
+       });
+});
+
 // get breezecards based on minimum value
-router.get('/get_min/:from', function(req, res) {
+router.get('/get_min/:from', auth.auth, function(req, res) {
     var from = req.params.from;
     console.log('value from:' + from);
     // query database
@@ -99,7 +122,7 @@ router.get('/get_min/:from', function(req, res) {
     });
 });
 
-router.get('/get_min', function(req, res) {
+router.get('/get_min', auth.auth, function(req, res) {
     
         // query database
         con.query('SELECT * FROM Breezecard;',

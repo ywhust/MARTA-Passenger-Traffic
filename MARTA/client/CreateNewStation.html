@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Create New Station</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/css/bootstrapvalidator.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+  <form id="stationForm">
+    <div class = "form-group">
+        <label for = "sName" class = "col-xs-3 c control-label">Station Name</label>
+         <div class="col-xs-4">
+            <input type = "text" class = "form-control" id = "sName" 
+            name = "stationName" required>
+         </div>
+    </div>
+    <div class = "form-group">
+        <label for = "sID" class = "col-xs-3 control-label">Stop ID</label>
+         <div class="col-xs-4">
+            <input type = "text" class = "form-control" id = "sID" 
+            name = "stopID" required>
+         </div>
+    </div>
+    <div class="form-group">
+        <label for="fare" class = "col-xs-3 control-label">Entry Fare</label>
+         <div class="col-xs-4">
+            <input type="text" class="form-control" id="fare" 
+            name = "entryFare" required>
+         </div>
+    </div>
+    <fieldset class="form-control" style="margin-bottom:20px;">
+        <legend>Station Type</legend>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+            Bus Station
+          </label>
+        </div>
+        <div class = "form-group">
+            <label for = "intersection" class = "col-xs-3 control-label">Nearest Intersection </label>
+            <input type = "text" class = "form-control" id = "intersection">
+        </div>
+        <div class="form-check">
+        <label class="form-check-label">
+            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2">
+            Train Station
+          </label>
+        </div>
+    </fieldset>
+    <div class="form-check">
+        <label class="form-check-label">
+          <input type="checkbox" class="form-check-input">
+          Open Station
+        </label>
+        <p>When checked, passengers can enter at this station</p>
+      </div>
+    <div class = "form-group">
+        <div class="col-xs-9 col-xs-offset-3">
+          <button type="submit" class="btn btn-default">Create Station</button>
+        </div>
+    </div>
+  </form>
+</div>
+</body>
+</html>
