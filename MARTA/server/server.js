@@ -90,7 +90,7 @@ router.get('/get_owner/:id', auth.auth, function(req, res) {
     var id = req.params.id;
     console.log('user id:' + id);
     // query database
-    con.query('SELECT * FROM Breezecard where belongsTo like?', '%' + id + '%',
+    db.query('SELECT * FROM Breezecard where belongsTo like?', '%' + id + '%',
        function(err, rows, fields) {
         console.log(rows); // results contains rows returned by server
         res.send(JSON.stringify(rows));
@@ -101,7 +101,7 @@ router.get('/get_owner/:id', auth.auth, function(req, res) {
 router.get('/get_owner', auth.auth, function(req, res) {
 
     // query database
-    con.query('SELECT * FROM Breezecard;',
+    db.query('SELECT * FROM Breezecard;',
        function(err, rows, fields) {
         console.log(rows); // results contains rows returned by server
         res.send(JSON.stringify(rows));
@@ -114,7 +114,7 @@ router.get('/get_min/:from', auth.auth, function(req, res) {
     var from = req.params.from;
     console.log('value from:' + from);
     // query database
-    con.query('SELECT * FROM Breezecard WHERE Value >=?', + from,
+    db.query('SELECT * FROM Breezecard WHERE Value >=?', + from,
         function(err, rows, fields) {
         console.log(rows); // results contains rows returned by server
         res.send(JSON.stringify(rows));
@@ -125,7 +125,7 @@ router.get('/get_min/:from', auth.auth, function(req, res) {
 router.get('/get_min', auth.auth, function(req, res) {
     
         // query database
-        con.query('SELECT * FROM Breezecard;',
+        db.query('SELECT * FROM Breezecard;',
            function(err, rows, fields) {
             console.log(rows); // results contains rows returned by server
             res.send(JSON.stringify(rows));

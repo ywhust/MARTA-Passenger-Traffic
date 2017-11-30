@@ -13,60 +13,57 @@
 
 <body>
 
-    <div class="container">
-        <form id="PassengerBreezecards" class="form-horizontal">
-            <div class="form-row">
-                <label for="sel1" style="float:left; padding: 6px 12px 2px 0px;">Select Breezecard:</label>
-                <div class="col-sm-6">
+    <div class="container" style="margin-top:50px">
+        <form id="PassengerBreezecards" class="form-horizontal" style="margin-top:10px">
+            <div class="form-row" style="margin:15px">
+                <label for="sel1" style="float:left; padding: 6px 12px 2px 0px;">Breezecard</label>
+                <div class="col-sm-6" style="margin-left:50px">
                     <select class="form-control" id="sel1">
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
                         <option>4</option>
                     </select>
-                   
                 </div>
                 <button type="button" class="btn btn-default">Manage Cards</button>
-
             </div>
-            <div class="form-group">
-                <label for="sID" class="col-xs-3 control-label">Balance</label>
+            <div class="form-group" style="margin:15px">
+                <label class="col-xs-3 control-label">Balance</label>
             </div>
-            <div class="form-group">
-                <label for="fare" class="col-xs-3 control-label">Entry Fare</label>
-                <div class="col-xs-4">
-                    <input type="text" class="form-control" id="fare" name="entryFare" required>
+            <div class="form-row" style="margin:15px">
+                <label for="sel1" style="float:left; padding: 6px 12px 2px 0px;">Start At</label>
+                <!-- margin is hard coded, ie margin-left -->
+                <div class="col-sm-6" style="margin-left:80px">
+                    <select class="form-control" id="sel2">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
                 </div>
             </div>
-            <fieldset class="form-control" style="margin-bottom:20px;">
-                <legend>Station Type</legend>
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked> Bus Station
-                    </label>
+            <div class="form-row" style="margin:15px">
+                <label for="sel1" style="float:left; padding: 6px 12px 2px 0px;">Ending At</label>
+                <!-- margin is hard coded, ie margin-left -->
+                <div class="col-sm-6" style="margin-left:65px">
+                    <select class="form-control" id="sel2">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
                 </div>
-                <div class="form-group">
-                    <label for="intersection" class="col-xs-3 control-label">Nearest Intersection </label>
-                    <input type="text" class="form-control" id="intersection">
-                </div>
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2"> Train Station
-                    </label>
-                </div>
-            </fieldset>
-            <div class="form-check">
-                <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input"> Open Station
-                </label>
-                <p>When checked, passengers can enter at this station</p>
-            </div>
-            <div class="form-group">
-                <div class="col-xs-9 col-xs-offset-3">
-                    <button type="submit" class="btn btn-default">Create Station</button>
-                </div>
+                <button type="button" class="btn btn-default">End Trip</button>
             </div>
         </form>
+        <div style="margin:15px; margin-top:100px">
+            <div style="float: left; width: 130px">
+                <button type="submit" class="btn btn-default">View Trip History</button>
+            </div>
+            <div style="float: right; width: 300px">
+                <button type="submit" class="btn btn-default">Logout</button>
+            </div>
+        </div>
     </div>
 </body>
 
