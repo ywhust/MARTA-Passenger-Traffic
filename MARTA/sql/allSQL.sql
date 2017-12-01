@@ -44,6 +44,11 @@ Select count(*) from Trip where EndsAt = '?' And StartsAt >= '?' And StartsAt <=
 --show the flow of passengers;
 
 Select StartsAt, count(*) from Trip Group by StartsAt; 
+Select EndsAt, count(*) from Trip Group by EndsAt;
+Select StartsAt, Sum(Tripfare) from Trip Group by StartsAt;
+
+
+
 
 
 
