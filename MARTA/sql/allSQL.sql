@@ -54,12 +54,16 @@ Select EndsAt, count(*) from Trip Group by EndsAt;
 
 Select StartsAt, Sum(Tripfare) from Trip Group by StartsAt;
 
-(Select S.StartsAt, S.passengersIn, E.passengersOut, (S.passengersIn - E.passengersOut) AS flow from (Select StartsAt, count(*) AS passengersIn from Trip Group by StartsAt) AS S LEFT JOIN (Select EndsAt, count(*) AS passengersOut from Trip Group by EndsAt) AS E on S.StartsAt = E.EndsAt) 
+Select * from ((Select S.StartsAt, E.EndsAt, S.passengersIn, E.passengersOut, (S.passengersIn - E.passengersOut) AS flow from (Select StartsAt, count(*), SUM(Tripfare) AS passengersIn from Trip Group by StartsAt) AS S LEFT JOIN (Select EndsAt, count(*), SUM(Tripfare) AS passengersOut from Trip Group by EndsAt) AS E on S.StartsAt = E.EndsAt) 
 UNION 
-(Select S.StartsAt, S.passengersIn, E.passengersOut, (S.passengersIn - E.passengersOut) AS flow from (Select StartsAt, count(*) AS passengersIn from Trip Group by StartsAt) AS S RIGHT JOIN (Select EndsAt, count(*) AS passengersOut from Trip Group by EndsAt) AS E on S.StartsAt = E.EndsAt);
+(Select S.StartsAt, E.EndsAt, S.passengersIn, E.passengersOut, (S.passengersIn - E.passengersOut), E.Tripfare,  AS flow from (Select StartsAt, count(*) AS passengersIn, SUM(Tripfare) AS Tripfare from Trip Group by StartsAt) AS S RIGHT JOIN (Select EndsAt, count(*) AS passengersOut, SUM(Tripfare) AS Tripfare from Trip Group by EndsAt) AS E on S.StartsAt = E.EndsAt)) AS X where X.StartsAt is not NULL or X.EndsAt is not Null;
+--AS X where X.StartsAt is not NULL And X.EndsAt is not Null;
 --problem needs to be solved
 
 
+Select X.StartsAt, X.EndsAt, X.passengersIn, X.passengersOut, X.Tripfare from (Select * from (Select StartsAt, count(*) AS passengersIn, SUM(Tripfare) AS Tripfare from Trip where StartTime >= '2017-10-31 09:30:00' And StartTime <= '2017-11-05 04:21:49' Group by StartsAt) AS S Left JOIN (Select EndsAt, count(*) AS passengersOut from Trip where StartTime >= '2017-10-31 09:30:00' And StartTime <= '2017-11-05 04:21:49' Group by EndsAt) AS E on S.StartsAt = E.EndsAt
+UNION
+Select * from (Select StartsAt, count(*) AS passengersIn, SUM(Tripfare) AS Tripfare from Trip where StartTime >= '2017-10-31 09:30:00' And StartTime <= '2017-11-05 04:21:49' Group by StartsAt) AS S RIGHT JOIN (Select EndsAt, count(*) AS passengersOut from Trip where StartTime >= '2017-10-31 09:30:00' And StartTime <= '2017-11-05 04:21:49' Group by EndsAt) AS E on S.StartsAt = E.EndsAt) AS X where X.StartsAt is not NULL or X.EndsAt is not Null;
 
 
 
