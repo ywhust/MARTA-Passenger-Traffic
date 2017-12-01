@@ -49,6 +49,15 @@ Select StartsAt, Sum(Tripfare) from Trip where StartsAt >= '?' And StartsAt <= '
 
 Update Station(EnterFare, ClosedStatus) Values(?, ?) where StopID = '?'
 
+Select StartsAt, count(*) from Trip Group by StartsAt; 
+Select EndsAt, count(*) from Trip Group by EndsAt;
+
+Select StartsAt, Sum(Tripfare) from Trip Group by StartsAt;
+
+(Select S.StartsAt, S.passengersIn, E.passengersOut, (S.passengersIn - E.passengersOut) AS flow from (Select StartsAt, count(*) AS passengersIn from Trip Group by StartsAt) AS S LEFT JOIN (Select EndsAt, count(*) AS passengersOut from Trip Group by EndsAt) AS E on S.StartsAt = E.EndsAt) 
+UNION 
+(Select S.StartsAt, S.passengersIn, E.passengersOut, (S.passengersIn - E.passengersOut) AS flow from (Select StartsAt, count(*) AS passengersIn from Trip Group by StartsAt) AS S RIGHT JOIN (Select EndsAt, count(*) AS passengersOut from Trip Group by EndsAt) AS E on S.StartsAt = E.EndsAt);
+--problem needs to be solved
 
 
 
