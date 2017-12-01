@@ -7,7 +7,7 @@ Select count(*) from Breezecard where BreezecardNum = 0123456780987654 and Belon
 Select count(*) from Breezecard where BreezecardNum = ?;
 -- used to judge one Breezecard exist or not;
 
-Insert into Breezecard(BreezecardNum, Value, BelongsTo) values(?, 0.00, ?);
+Insert into Breezecard(BreezecardNum, Value, BelongsTo) Values(?, 0.00, ?);
 -- used to insert a Breezecard and assigned to a passenger;
 
 Update Breezecard set Value = ? where BreezecardNum = ?;
@@ -16,7 +16,7 @@ Update Breezecard set Value = ? where BreezecardNum = ?;
 Update Breezecard set BelongsTo = NULL where BreezecardNum = ?;
 -- remove breezecards association to one passenger;
 
-Insert into Conflict(Username, BreezecardNum, DateTime) values((Select BelongsTo from Breezecard where BreezecardNum = '?'), '?', NOW( ));
+Insert into Conflict(Username, BreezecardNum, DateTime) Values((Select BelongsTo from Breezecard where BreezecardNum = '?'), '?', NOW( ));
 --suspend a card;
 
 Delete from Conflict where BreezecardNum = ? And Username = ?;
@@ -43,11 +43,11 @@ Select count(*) from Trip where EndsAt = '?' And StartsAt >= '?' And StartsAt <=
 --show the number of people entering the station or exiting the station;
 --show the flow of passengers;
 
-Select StartsAt, count(*) from Trip Group by StartsAt; 
-Select EndsAt, count(*) from Trip Group by EndsAt;
-Select StartsAt, Sum(Tripfare) from Trip Group by StartsAt;
+Select StartsAt, count(*) from Trip where StartsAt >= '?' And StartsAt <= '?' Group by StartsAt; 
+Select EndsAt, count(*) from Trip where StartsAt >= '?' And StartsAt <= '?' Group by EndsAt;
+Select StartsAt, Sum(Tripfare) from Trip where StartsAt >= '?' And StartsAt <= '?' Group by StartsAt;
 
-
+Update Station(EnterFare, ClosedStatus) Values(?, ?) where StopID = '?'
 
 
 
