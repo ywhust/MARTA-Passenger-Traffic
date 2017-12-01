@@ -1,16 +1,23 @@
+// The following code will be executed when document is ready
 $(document).ready(function () {
 
     // make signin-error-div invisible
     $("#signin-error-div").hide();
+    $("#passenger-div").hide();
+
+    // hide error message div when username or password field detects click
+    $("#sign-in-form").find("#username").on("click keyup", function(){
+        $("#signin-error-div").hide();
+    });
+    $("#sign-in-form").find("#username").on("click keyup",function(){
+        $("#signin-error-div").hide();
+    });
 
     $("#sign-in-form").submit(function (e) {
-        e.preventDefault();
 
-        var s = $("#sign-in-form");
-        var d = s.serialize();
+        e.preventDefault(); // important - prevent default action
 
-        // remove &newPassword=
-        d = d.replace('&newPassword=', '');
+        var d = $(this).serialize(); // data
 
         $.ajax({
             url: "http://localhost:4000/login",
@@ -21,24 +28,33 @@ $(document).ready(function () {
             },
         });
     });
-
-    verifySignIn = function (result) {
-        switch (result.statusCode) {
-            case "OK":
-                // show next page
-                break;
-
-            case "WRONG_PASSWORD":
-            case "NO_USER":
-                showSignInError("Invalid username or password"); // show error message
-                $("#username").text("");
-                $("password").text("");
-                break;
-        }
-    }
-
-    showSignInError = function (msg) {
-        $("#signin-error-div").find('#error-msg').text(msg);
-        $("#signin-error-div").show();
-    }
 });
+
+//////////////// Function Definition ///////////////////////////
+var verifySignIn = function (result) {
+    switch (result.statusCode) {
+        case "OK":
+            // check user type - passenger or admin
+            if (result.isAdmin == 'TRUE') {
+                // show admin panel
+                $("#login").hide();
+            }
+            else {
+                // show welcome passenger panel
+                $("#login").hide();
+                $("#passenger-div").show();
+            }
+            break;
+
+        case "FAILED":
+            showSignInError("Invalid username or password"); // show error message
+            $("#username").text("");
+            $("password").text("");
+            break;
+    }
+}
+
+var showSignInError = function (msg) {
+    $("#signin-error-div").find('#error-msg').text(msg);
+    $("#signin-error-div").show();
+}
