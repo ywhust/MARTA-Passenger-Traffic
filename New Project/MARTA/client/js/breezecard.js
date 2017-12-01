@@ -67,11 +67,11 @@ var getBreezeCards = function (opt) {
         data: d,
         success: function (data) {
             // check the return status
-            if (typeof data.statusCode != "undefined" &&
-                data.statusCode == "NOT_AUTHORIZED") {
-                alert("Not Authorized");
-                return;
-            }
+            // if (typeof data.statusCode != "undefined" &&
+            //     data.statusCode == "NOT_AUTHORIZED") {
+            //     alert("Not Authorized");
+            //     return;
+            // }
 
             // update the table
             $datatable.clear();
@@ -83,9 +83,9 @@ var getBreezeCards = function (opt) {
                 var array;
                 for (var i = 0; i < json.length; i++) {
                     array = [];
-                    array.push(json[i].number);
-                    array.push(json[i].value);
-                    array.push(json[i].owner)
+                    array.push(json[i].BreezecardNum);
+                    array.push(json[i].Value);
+                    array.push(json[i].BelongsTo)
                     $datatable.row.add(array);
                 }
             }

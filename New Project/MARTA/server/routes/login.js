@@ -49,7 +49,7 @@ exports.login = function (req, res) {
     }
     res.end();
 
-    /****
+
     db.query('SELECT * FROM user WHERE Username = ?', [user],
         function (error, results, fields) {
             if (error) {
@@ -82,7 +82,7 @@ exports.login = function (req, res) {
                 }
             }
         });
-        ***/
+
 }
 
 exports.logout = function (req, res) {
