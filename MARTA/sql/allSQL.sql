@@ -61,9 +61,11 @@ UNION
 --problem needs to be solved
 
 
-Select X.StartsAt, X.EndsAt, X.passengersIn, X.passengersOut, X.Tripfare from (Select * from (Select StartsAt, count(*) AS passengersIn, SUM(Tripfare) AS Tripfare from Trip where StartTime >= '2017-10-31 09:30:00' And StartTime <= '2017-11-05 04:21:49' Group by StartsAt) AS S Left JOIN (Select EndsAt, count(*) AS passengersOut from Trip where StartTime >= '2017-10-31 09:30:00' And StartTime <= '2017-11-05 04:21:49' Group by EndsAt) AS E on S.StartsAt = E.EndsAt
+
+Select X.StartsAt, X.EndsAt, IFNULL(X.passengersIn, 0) AS passengersIn, IFNULL(X.passengersOut, 0) AS passengersOut, IFNULL(X.Tripfare, 0) AS Tripfare from (Select * from (Select StartsAt, count(*) AS passengersIn, SUM(Tripfare) AS Tripfare from Trip where StartTime >= '2017-10-31 09:30:00' And StartTime <= '2017-11-05 04:21:49' Group by StartsAt) AS S Left JOIN (Select EndsAt, count(*) AS passengersOut from Trip where StartTime >= '2017-10-31 09:30:00' And StartTime <= '2017-11-05 04:21:49' Group by EndsAt) AS E on S.StartsAt = E.EndsAt
 UNION
 Select * from (Select StartsAt, count(*) AS passengersIn, SUM(Tripfare) AS Tripfare from Trip where StartTime >= '2017-10-31 09:30:00' And StartTime <= '2017-11-05 04:21:49' Group by StartsAt) AS S RIGHT JOIN (Select EndsAt, count(*) AS passengersOut from Trip where StartTime >= '2017-10-31 09:30:00' And StartTime <= '2017-11-05 04:21:49' Group by EndsAt) AS E on S.StartsAt = E.EndsAt) AS X where X.StartsAt is not NULL or X.EndsAt is not Null;
+
 
 
 
