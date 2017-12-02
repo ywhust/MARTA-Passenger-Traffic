@@ -6,8 +6,7 @@ const router = express.Router();
 const login = require('./routes/login');
 const register = require('./routes/register');
 const breezecard = require('./routes/breezecard');
-const breezecardNums = require('./routes/passengerBC');
-const station = require('./routes/passengerBC');
+const passenger = require('./routes/passengerBC');
 const bodyParser = require('body-parser');
 const port = 4000;
 const db = require("./dbconnection");
@@ -48,8 +47,10 @@ router.post('/login', login.login);
 router.post('/logout', login.logout);
 router.post('/register', register.register);
 router.post('/getBreezeCard', auth.auth, breezecard.getBreezeCard);
-router.post('/getBreezeCardNums', auth.auth, breezecardNums.getBreezeCardNums);
-router.post('/getStation', auth.auth, station.getStation);
+router.post('/getBreezeCardNums', auth.auth, passenger.getBreezeCardNums);
+router.post('/getStation', auth.auth, passenger.getStation);
+router.post('/startTrip', auth.auth, passenger.startTrip);
+router.post('/getNewStations', auth.auth, passenger.getNewStations);
 
 // apply the routes to our application
 app.use('/', router);
