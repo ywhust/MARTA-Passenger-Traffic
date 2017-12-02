@@ -18,12 +18,51 @@ exports.getBreezeCardNums = function (req, res) {
     // remove white space from card number
     cardnum = cardnum.replace(/\s/g, "");
 
-    // prepre sql statement
-    var sSql = "SELECT * FROM Breezecard";
+    // select non-suspended breeze cards
+    var sSql = "SELECT * FROM Breezecard WHERE BreezecardNum NOT IN (Select C.BreezecardNum from Conflict AS C)";
 
     if (cardnum != "") {
-        sSql += " where BreezecardNum = '" + cardnum + "';";
+        sSql += " and BreezecardNum = '" + cardnum + "';";
     }
+
+    // search breeze card table based on owner
+    console.log(sSql);
+    db.query(sSql, function (err, rows, fields) {
+
+        if (typeof rows == 'undefined') {
+            console.log("no matches found");
+            res.send("").end();
+        }
+        else {
+            console.log(rows); // results contains rows returned by server
+            var json = JSON.stringify(rows);
+            res.send(json).end();
+        }
+    });
+}
+
+
+exports.checkForNull = function (req, res) {
+
+    // check data type
+    if (typeof req.body == 'undefined') {
+        res.send({
+            "code": 200,
+            "statusCode": "No parameter found",
+            "success": "No parameter found"
+        }).end();
+        return;
+    }
+
+    // breeze card search option
+    //var cardnum = req.body.cardnum || "";
+
+    // prepre sql statement
+    var sSql = "Select * from Station AS S where S.StopID IN (Select StartsAt from Trip AS T where T.EndsAt is NULL);";
+
+    // if (cardnum != "") {
+    //     sSql += " where BreezecardNum = '" + cardnum + "';";
+    // }
 
     // search breeze card table based on owner
     console.log(sSql);
@@ -124,21 +163,23 @@ exports.startTrip = function (req, res) {
     }
 
     // prepre sql statement - inserting the new trip into the trip table
-    var sSql = "INSERT INTO `Trip` (`Tripfare`, `StartTime`, `BreezecardNum`, `StartsAt`) VALUES ('" + trip.tripFare + "', '2017-12-1 21:20:3', '"
+    var sSql = "INSERT INTO `Trip` (`Tripfare`, `StartTime`, `BreezecardNum`, `StartsAt`) VALUES ('" + trip.tripFare + "', '" + trip.startTime + "', '"
         + trip.cardnum + "',  (Select StopID from Station where Name = '" + trip.startsAt + "'));";
 
     // search breeze card table based on owner
     console.log(sSql);
     db.query(sSql, function (err, rows, fields) {
+        2
         if (err) {
             console.log("error ocurred", err);
             res.send({
-                "message": err.message
+                "message": err.message,
             }).end();
             return;
         } else {
             res.send({
-                "message": "Trip started!"
+                "message": "Trip started!",
+                "sql": sSql
             }).end();
             return;
         }
@@ -165,3 +206,93 @@ exports.startTrip = function (req, res) {
     //     }
     // });
 }
+
+exports.endTrip = function (req, res) {
+    console.log("req", req.body);
+    var trip = {
+        "cardnum": req.body.cardnum,
+        "startsAt": req.body.startsAt,
+        "tripFare": req.body.tripFare,
+        "startTime": req.body.startTime,
+        "endsAt": req.body.endsAt,
+    }
+    // check data type
+    if (typeof req.body == 'undefined') {
+        res.send({
+            "code": 200,
+            "statusCode": "No parameter found",
+            "success": "No parameter found"
+        }).end();
+        return;
+    }
+
+    // prepre sql statement - inserting the new trip into the trip table
+    var sSql = "UPDATE Trip SET EndsAt = (SELECT StopID from Station WHERE Name = '" + trip.endsAt
+        + "') WHERE BreezecardNum = '" + trip.cardnum + "' AND StartTime = '" + trip.startTime + "';";
+
+    // search breeze card table based on owner
+    console.log(sSql);
+    db.query(sSql, function (err, rows, fields) {
+        console.log(rows.affectedRows)
+        if (err) {
+            console.log("error ocurred", err);
+            res.send({
+                "message": err.message
+            }).end();
+            return;
+        }  else if (rows.affectedRows == 0) {
+            console.log("no matches found");
+            res.send({
+                "message": "Trip not able to be ended; update statement failed",
+                "sql": sSql
+            }).end();
+        } else {
+            res.send({
+                "message": "Trip ended!",
+                "sql": sSql
+            }).end();
+            return;
+        }
+    });
+}
+
+exports.subtractBalance = function (req, res) {
+    console.log("req", req.body);
+    var trip = {
+        "cardnum": req.body.cardnum,
+        "tripFare": req.body.tripFare, 
+        "balance": req.body.balance,
+    }
+    // check data type
+    if (typeof req.body == 'undefined') {
+        res.send({
+            "code": 200,
+            "statusCode": "No parameter found",
+            "success": "No parameter found"
+        }).end();
+        return;
+    }
+
+    // prepre sql statement - inserting the new trip into the trip table
+    var sSql = "UPDATE Breezecard SET Value = " + trip.balance
+        + " WHERE BreezecardNum = '" + trip.cardnum + "';";
+
+    // search breeze card table based on owner
+    console.log(sSql);
+    db.query(sSql, function (err, rows, fields) {
+        if (err) {
+            console.log("error ocurred", err);
+            res.send({
+                "message": err.message
+            }).end();
+            return;
+        }  else {
+            res.send({
+                "message": "Balance updated: ",
+                "sql": sSql
+            }).end();
+            return;
+        }
+    });
+}
+

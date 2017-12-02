@@ -1,15 +1,20 @@
 //global variable to keep track of time of current trip 
 var tripTime
 var stationType
+var tripCard
 
 // The following code will be executed when document is ready
 $(document).ready(function () {
-    // initialize the datatable;
+
+    // initialize the select lists;
     initSelectLists();
 
     //hide "in progress" label and "end trip" button
     $("#progress").hide();
     $("#end").hide();
+
+    //check to see if the passenger is already in a trip
+    // initCheck();
 
     //logout button
     $("#logout").click(function () {
@@ -35,6 +40,7 @@ $(document).ready(function () {
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date + ' ' + time;
         tripTime = dateTime;
+        tripCard = $("#sel1").val();
 
         var opt = {
             cardnum: $("#sel1").val(),
@@ -57,6 +63,7 @@ $(document).ready(function () {
                     alert("Please select a breezecard!");
                 } else {
                     alert(data.message)
+                    alert(data.sql)
                     if (data.message === "Trip started!") {
                         $("#start").hide();
                         $("#progress").show();
@@ -66,6 +73,21 @@ $(document).ready(function () {
                 }
             },
         });
+
+        var balance = Number($("#balance").text()) - Number(opt.tripFare);
+        var url2 = "http://localhost:" + port + "/subtractBalance";
+        var d2 = "cardnum=" + opt.cardnum + "&tripFare=" + opt.tripFare + "&balance="
+            + balance;
+
+        $.ajax({
+            url: url2,
+            data: d2,
+            type: "POST",
+            success: function (data) {
+                alert(data.message + data.sql);
+            },
+        });
+        getBalance();
     });
 
     $("#end").click(function () {
@@ -75,13 +97,13 @@ $(document).ready(function () {
         var splitStartsAt = str.split(" - $");
 
         var opt = {
-            cardnum: $("#sel1").val(),
+            //change: cardnum should be from the tuple in trip with endsat IS NULL
+            cardnum: tripCard,
             startsAt: splitStartsAt[0],
             tripFare: splitStartsAt[1],
             startTime: tripTime,
             endsAt: $("#sel3").val(),
         };
-
         var url = "http://localhost:" + port + "/endTrip";
         var d = "cardnum=" + opt.cardnum + "&startsAt=" + opt.startsAt
             + "&tripFare=" + opt.tripFare + "&startTime=" + opt.startTime
@@ -93,9 +115,21 @@ $(document).ready(function () {
             type: "POST",
             success: function (data) {
                 console.log("trip post success!")
+                if (data.message.substring(0, 20) === "Cannot add or update") {
+                    alert(data.message);
+                } else {
+                    alert(data.message)
+                    alert(data.sql)
+                    if (data.message === "Trip ended!") {
+                        $("#start").show();
+                        $("#progress").hide();
+                        $("#sel2").prop('disabled', false);
+                        $("#end").hide();
+                    }
+                }
             },
         });
-    }); 
+    });
 
 });
 
@@ -103,6 +137,31 @@ $(document).ready(function () {
 //////////////////////////// Function Definition Block //////////////////////////
 var port = 4000; // server.js listening port
 var $datatable;
+
+var initCheck = function () {
+    // get breeze cards based on a given owner (wild card search)
+    var url = "http://localhost:" + port + "/checkForNull";
+    //var d = //include username of user currently logged on
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        //data: d,
+        success: function (data) {
+
+            if (data != "") {
+                var json = JSON.parse(data);
+
+                $("#start").hide();
+                $("#progress").show();
+                $("#sel2").prop('disabled', 'disabled');
+                $("#sel2").val(json[0].Name
+                    + " - $" + json[0].EnterFare);
+                $("#end").show();
+            }
+        }
+    });
+}
 
 var initSelectLists = function () {
     // 1 - get a list of breezecards
@@ -148,7 +207,6 @@ var getNewStations = function () {
 };
 
 var updateBalance = $("#sel1").change(function () {
-    console.log("asdf");
     getBalance();
 });
 
@@ -240,7 +298,7 @@ var getStations = function () {
                 }
             }
         },
-        complete: function(data) {
+        complete: function (data) {
             getNewStations();
         }
     });

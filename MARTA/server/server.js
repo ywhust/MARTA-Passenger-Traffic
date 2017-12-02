@@ -50,6 +50,9 @@ router.post('/getBreezeCard', auth.auth, breezecard.getBreezeCard);
 router.post('/getBreezeCardNums', auth.auth, passenger.getBreezeCardNums);
 router.post('/getStation', auth.auth, passenger.getStation);
 router.post('/startTrip', auth.auth, passenger.startTrip);
+router.post('/endTrip', auth.auth, passenger.endTrip);
+router.post('/checkForNull', auth.auth, passenger.checkForNull);
+router.post('/subtractBalance', auth.auth, passenger.subtractBalance);
 router.post('/getNewStations', auth.auth, passenger.getNewStations);
 
 // apply the routes to our application
