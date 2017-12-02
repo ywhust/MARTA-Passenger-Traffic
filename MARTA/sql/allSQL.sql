@@ -68,6 +68,38 @@ Update Breezecard set Value = ? where BreezecardNum = ?;
 Update Breezecard set BelongsTo = NULL where BreezecardNum = ?;
 -- remove breezecards association to one passenger;
 
+--------------------------------------------------------------------------------------------
+--Start a trip;
+Select Value from Breezecard where BreezecardNum = '?';
+--show balance of a particular card;
+
+Select EnterFare from Station where Name = '?';
+
+
+
+
+
+
+
+
+
+--Add a Trip and Assign a start station;
+INSERT INTO Trip(Tripfare, StartTime, BreezecardNum, StartsAt) VALUES (2.00, '2017-12-1 18:13:3', '0524807425551662', (Select StopID from Station where Name = 'Old Milton Pkwy - North Point Pkwy'));
+
+Update Trip SET EndsAt =  (Select StopID from Station where Name = 'FP') where BreezecardNum = '1325138309325420' And StartTime = '2017-10-31 21:30:00';
+
+Update Trip SET EndsAt =  NULL where BreezecardNum = '1325138309325420' And StartTime = '2017-10-31 21:30:00';
+
+
+
+
+
+Update Trip SET StartTime =  '2017-10-31 21:30:00' where BreezecardNum = '1325138309325420';
+
+
+
+
+
 
 
 
