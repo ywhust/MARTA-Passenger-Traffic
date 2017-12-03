@@ -28,6 +28,58 @@ $(document).ready(function () {
         getBreezeCards(getBreezeCardSearchOption());
     });
 
+    $datatable.on('click', 'tbody tr', function() {
+        //$datatable.row(this).toggleClass("")
+        //console.log('API row values : ', $datatable.row(this).data());
+        num = $datatable.row(this).data()[0];
+        previousOwner = $datatable.row(this).data()[2];
+        console.log(num);
+        console.log(previousOwner);
+    })
+
+    //newly added
+    $('#vbutton').on('click', () => {
+        var updatedValue = $('#bvalue').val();
+        //alert("value is " + updatedValue);
+        //alert(num);
+        if (num === undefined) {
+            alert("you must select a breezecard first!");
+        } else if (updatedValue === "") {
+            alert("you must enter fare first!");
+        } else if (Number(updatedValue) < 0 || Number(updatedValue) > 1000) {
+
+            alert("value of breezecard must be between 0 to 1000");
+
+        } else {
+            updateBreezecardValue(updatedValue);
+        }
+        
+    });
+
+    $('#obutton').on('click', () => {
+        var updatedOwner = $('#bowner').val();
+        //alert("owner is " + updatedOwner);
+
+        if (num === undefined) {
+            alert("you must select a breezecard first!");
+        } else if (updatedOwner === "") {
+            alert("you must enter an owner first!");
+        } else {
+            updateOwner(updatedOwner);
+            console.log("updated is" + isUpdated);
+            if (isUpdated) {
+                console.log("inside updated");
+                deleteFromConflict(updatedOwner);
+                checkPrevious();
+                if (count === 0) {
+                    alert(previousOwner + "has no breezecard!");
+                    generateNewCard();
+                }
+            }
+        }
+       
+    })
+
 });
 
 
@@ -106,6 +158,127 @@ var getBreezeCards = function (opt) {
             $datatable.draw();
         }
     });
+}
+
+///////////////newly added  pumpkin/////////////////////////////////////
+
+var updateBreezecardValue = (updatedValue) => {
+    var url = "http://localhost:" + port + "/updateBreezecardValue";
+    var d = {
+        "updatedValue": updatedValue,
+        "num":num
+    }
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: d,
+        success: function (data) {
+        
+            if (data != "") {
+                //var json = JSON.parse(data);
+                console.log(data);
+                alert(data);
+                location.reload();
+            }
+        }
+    });
+}
+
+
+var deleteFromConflict = () => {
+    var url = "http://localhost:" + port + "/deleteFromConflict";
+    var d = {
+        "num":num
+    }
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: d,
+        success: function (data) {
+        
+            if (data != "") {
+                //var json = JSON.parse(data);
+                console.log(data);
+                alert(data);
+            }
+        }
+    });
+}
+
+
+var updateOwner = (updatedOwner) => {
+    var url = "http://localhost:" + port + "/updateOwner";
+    var d = {
+        "updatedOwner": updatedOwner,
+        "num":num
+    }
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: url,
+        data: d,
+        success: function (data) {
+        
+            if (data != "") {
+                //var json = JSON.parse(data);
+                // updated = "true";
+                // console.log(updated);
+                // console.log(data);
+                alert(data);
+                isUpdated = true;
+                
+                
+            } else {
+                // updated = "false";
+                // console.log(updated);
+                alert("please enter a valid owner");
+                isUpdated = false;
+         
+                
+            }
+        }
+        // complete: (data) => {
+        //     if (data!= " ")
+        // }
+    });
+
+}
+
+
+var checkPrevious = () => {
+    var url = "http://localhost:" + port + "/checkPrevious";
+    var d = {
+        "previousOwner": previousOwner,
+    }
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: url,
+        data: d,
+        success: function (data) {
+            console.log("inside success");
+            console.log(data["0"]["count(*)"]);
+            alert(previousOwner + " has " + data["0"]["count(*)"] + " breezecards!");
+            count = data["0"]["count(*)"];
+        }
+    });
+}
+
+
+var generateNewCard = () => {
+    var url = "http://localhost:" + port + "/generateNewCard";
+    var d = {
+        "previousOwner": previousOwner,
+    }
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: d,
+        success: function (data) {
+           // alert("A new breezecard has been generated for " + previousOwner);
+        }
+    });
+    alert("A new breezecard has been generated for " + previousOwner);
 }
 
 

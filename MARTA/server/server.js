@@ -54,6 +54,11 @@ router.post('/endTrip', auth.auth, passenger.endTrip);
 router.post('/checkForNull', auth.auth, passenger.checkForNull);
 router.post('/subtractBalance', auth.auth, passenger.subtractBalance);
 router.post('/getNewStations', auth.auth, passenger.getNewStations);
+router.post('/updateBreezecardValue', auth.auth, breezecard.updateBCValue);
+router.post('/deleteFromConflict', auth.auth, breezecard.deleteFromConflict);
+router.post('/updateOwner', auth.auth, breezecard.updateOwner);
+router.post('/checkPrevious', auth.auth, breezecard.checkPrevious);
+router.post('/generateNewCard', auth.auth, breezecard.generateNewCard);
 
 // apply the routes to our application
 app.use('/', router);

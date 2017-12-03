@@ -109,3 +109,183 @@ exports.getBreezeCard = function (req, res) {
         }
     });
 }
+
+//////////newly added pumpkin////////////////////////////////////////
+
+exports.updateBCValue = function (req, res) {
+
+    // check data type
+    if (typeof req.body == 'undefined') {
+        res.send({
+            "code": 200,
+            "statusCode": "No parameter found",
+            "success": "No parameter found"
+        }).end();
+        return;
+    }
+
+    var value = req.body.updatedValue;
+    var num = req.body.num;
+
+    // prepre sql statement
+    var sSql = "Update Breezecard SET Value = '" + value + "' where BreezecardNum = '" + num + "'";
+
+    console.log(sSql);
+    db.query(sSql, function (err, rows, fields) {
+
+        if (typeof rows == 'undefined') {
+            console.log("no matches found");
+            res.send("").end();
+        }
+        else {
+            console.log(rows); // results contains rows returned by server
+            res.send("fare updated").end();
+        }
+    });
+}
+
+
+exports.deleteFromConflict = function (req, res) {
+
+    // check data type
+    if (typeof req.body == 'undefined') {
+        res.send({
+            "code": 200,
+            "statusCode": "No parameter found",
+            "success": "No parameter found"
+        }).end();
+        return;
+    }
+
+    var num = req.body.num;
+
+    // prepre sql statement
+    var sSql = "Delete from Conflict where BreezecardNum = '" + num + "'";
+
+    console.log(sSql);
+    db.query(sSql, function (err, rows, fields) {
+
+        if (typeof rows == 'undefined') {
+            console.log("no matches found");
+            res.send("").end();
+        }
+        else {
+            // console.log(rows); // results contains rows returned by server
+            res.send("if card exists in conflict table, deleted").end();
+        }
+    });
+}
+
+exports.updateOwner = (req, res) => {
+    if (typeof req.body == 'undefined') {
+        res.send({
+            "code": 200,
+            "statusCode": "No parameter found",
+            "success": "No parameter found"
+        }).end();
+        return;
+    }
+
+    var updatedOwner = req.body.updatedOwner;
+    var num = req.body.num;
+
+
+    var sSql = "Update Breezecard set BelongsTo = '" + updatedOwner + "' ";
+    sSql += "where BreezecardNum = '" + num + "';";
+
+    console.log(sSql);
+    db.query(sSql, function (err, rows, fields) {
+
+        if (typeof rows == 'undefined') {
+            console.log(err);
+            console.log("no matches found");
+            res.send("").end();
+        }
+        else {
+            // console.log(rows); // results contains rows returned by server
+            res.send("owner updated").end();
+        }
+    });
+}
+
+
+exports.checkPrevious = (req, res) => {
+    if (typeof req.body == 'undefined') {
+        res.send({
+            "code": 200,
+            "statusCode": "No parameter found",
+            "success": "No parameter found"
+        }).end();
+        return;
+    }
+
+    var previousOwner = req.body.previousOwner;
+    console.log(sSql);
+
+    var sSql = "Select count(*) from Breezecard where BelongsTo = '" + previousOwner + "'";
+
+    console.log(sSql);
+    db.query(sSql, function (err, rows, fields) {
+
+        if (typeof rows == 'undefined') {
+            console.log(err);
+            console.log("no matches found");
+            res.send("").end();
+        }
+        else {
+            console.log("row is" + rows); // results contains rows returned by server
+            res.send(rows).end();
+        }
+    });
+}
+
+
+// generate randon string
+function randomString(length, chars) {
+    var result = '';
+    for (var i = length; i > 0; --i) {
+        result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
+}
+
+// generate a breezecard number
+exports.generateNewCard = function (req, res) {
+    var previousOwner = req.body.previousOwner;
+    card_num = randomString(16, '0123456789');
+    console.log(previousOwner);
+    console.log(card_num);
+
+    generateIntoDB(previousOwner);
+
+}
+
+function generateIntoDB(previousOwner) {
+
+    db.query('SELECT * FROM Breezecard WHERE BreezecardNum = ?',
+        card_num, function (err, rows, fields) {
+            if (rows.length > 0) {
+                generateIntoDB(previousOwner);
+            } else {
+
+                var sSql = "INSERT INTO Breezecard (BreezecardNum, Value, BelongsTo)";
+                sSql += "VALUES('" + card_num + "', " + 0.0 + ", '" + previousOwner + "';";
+                console.log(sSql);
+                db.query(
+                    `INSERT INTO Breezecard (BreezecardNum, Value, BelongsTo)
+                    VALUES (?, ?, ?);`,
+                    [card_num, 0.0, previousOwner], (err, rows, fields) => {
+
+                        if (typeof rows == 'undefined') {
+                            console.log(err);
+                            console.log("no matches found");
+                        }
+                        else {
+                            console.log("A new breezecard has been generated for " + previousOwner);
+                            console.log("row is" + rows); // results contains rows returned by server
+                        }
+
+                    });
+            }
+        });
+}
