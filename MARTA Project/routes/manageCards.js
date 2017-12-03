@@ -25,7 +25,14 @@ exports.removeBreezecard = function(req, res) {
                    (BreezecardNum NOT IN (SELECT BreezecardNum FROM Trip) OR
                    (SELECT EndsAt FROM Trip WHERE BreezecardNum = ?) IS NOT NULL);`;
     db.query(sql, [breezecardNum, breezecardNum], function(err, rows, fields) {
-        getCardsInfo(req, res, belongsTo);
+        console.log(rows);
+        if (rows.affectedRows == 0) {
+            res.send({
+                "message": "You cannot remove a in-trip card."
+            })
+        } else {
+            getCardsInfo(req, res, belongsTo);
+        }
     });
 }
 

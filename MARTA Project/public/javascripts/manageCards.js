@@ -2,6 +2,7 @@ $(document).ready(function () {
 
     // hide error messages
     $('#wrong-card-num').hide();
+    $('#wrong-credit-num').hide();
     $('#wrong-value').hide();
     $('#limitation').hide();
     $('#wrong-rm-msg').hide();
@@ -47,16 +48,28 @@ $(document).ready(function () {
     });
 
     $('#add-value-btn').on('click', function() {
+        $('#wrong-credit-num').hide();
+        $('#wrong-value').hide();
+        $('#limitation').hide();
         var value = Number($('#value').val());
+        var card_num = $('#credit-card').val();
+        if (card_num.length != 16) {
+            $('#wrong-credit-num').show();
+        }
         if (value < 0) {
             console.log("wrong value")
             $('#wrong-value').show();
-        } else if (value + Number(selectedValue) > 1000) {
+        }
+        if (value + Number(selectedValue) > 1000) {
             console.log(Number(selectedValue));
             $('#limitation').show();
-        } else {
+        }
+
+        var isValid = card_num.length == 16 && value >= 0 &&  value + Number(selectedValue) <= 1000
+        if (isValid) {
             $('#wrong-value').hide();
             $('#limitation').hide();
+            $('#wrong-credit-num').hide();
             // update balance in database
             console.log(selectedCard);
             addValueBreezecard(selectedCard, value);
@@ -130,7 +143,12 @@ var removeBreezecard = function(breezecardNum) {
         type: 'POST',
         data: data,
         success: function(result) {
-            createDataTable(result);
+            console.log(result)
+            if (result.message != undefined) {
+                alert(result.message);
+            } else {
+                createDataTable(result);
+            }
         }
     });
 }
