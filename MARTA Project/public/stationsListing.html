@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <title>Stations Listing</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Station Listing</h1>
+        <table class="table table-striped" id="stations">
+            <thead>
+                <tr>
+                    <th>Station Name</th>
+                    <th>Stop ID</th>
+                    <th>Fare</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+        </table>
+        <div class="form-group">
+            <div class="col-xs-9 col-xs-offset-3">
+                <button type="button" class="btn btn-default" id="create-station-btn">Create New Station</button>
+                <button type="button" class="btn btn-default" id='view-station-btn'>View Station</button>
+            </div>
+        </div>
+    </div>
+    <script src="javascripts/stationsListing.js"></script>
+</body>
+</html>
