@@ -16,7 +16,7 @@ function getNewCard(username) {
     db.query('SELECT * FROM Breezecard WHERE BreezecardNum = ?',
         card_num, function(err, rows, fields) {
             if (rows.length > 0) {
-                getNewCard();
+                getNewCard(username);
             } else {
                 db.query(
                     `INSERT INTO Breezecard (BreezecardNum, Value, BelongsTo)
