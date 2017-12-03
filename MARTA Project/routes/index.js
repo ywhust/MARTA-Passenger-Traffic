@@ -38,6 +38,7 @@ router.post('/getStation/:id', stationDetail.getStationById);
 router.post('/getStation/:id/updateFare', stationDetail.updateFare);
 router.post('/getStation/:id/updateStatus', stationDetail.updateStatus);
 router.post('/createStation', stationDetail.createStation);
+router.post('/getIntersection', stationDetail.getIntersection);
 
 router.post('/getBreezeCardNums', passenger.getBreezeCardNums);
 router.post('/getStation', passenger.getStation);

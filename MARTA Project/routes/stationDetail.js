@@ -31,6 +31,37 @@ exports.getStationById = function (req, res) {
     });
 }
 
+exports.getIntersection = function (req, res) {
+    // check data type
+    if (typeof req.body == 'undefined') {
+        res.send({
+            "code": 200,
+            "statusCode": "No parameter found",
+            "success": "No parameter found"
+        }).end();
+        return;
+    }
+
+    var id = req.body.stopID;
+
+    // prepre sql statement
+    var sSql = "SELECT * FROM BusStationIntersection where StopID = '" + id + "'";
+
+    console.log(sSql);
+    db.query(sSql, function (err, rows, fields) {
+
+        if (typeof rows == 'undefined') {
+            console.log("no matches found");
+            res.send("").end();
+        }
+        else {
+            console.log(rows); // results contains rows returned by server
+            var json = JSON.stringify(rows);
+            res.send(json).end();
+        }
+    });
+}
+
 
 exports.updateFare = function (req, res) {
 

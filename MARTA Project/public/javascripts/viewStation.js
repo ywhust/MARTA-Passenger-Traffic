@@ -2,13 +2,12 @@ var stopID;
 var port = 3000;
 
 $(document).ready(function () {
-
     var params = window.location.search.split('?')[1].split('=')[1];
     console.log(params);
 
     //console.log(typeof params === String);
     stopID = String(params);
-    $("#stopid").text('Stop ID:' + stopID);
+    $("#stopid").text(stopID);
 
     getStationById();
 
@@ -29,7 +28,7 @@ $(document).ready(function () {
         $('#errormessage').text('');
     });
 
-    $("#check" ).on('click', ()=>{
+    $("#check").on('click', () => {
         console.log(document.getElementById("check").checked);
         if (document.getElementById("check").checked) {
             //open
@@ -63,6 +62,12 @@ var getStationById = function () {
                 } else {
                     $('#check').prop('checked', false);
                 }
+                if (json[0].IsTrain == 1) {
+                    $("#intersection").text("Not available for train stations");
+                } else {
+                    getNearestIntersection();
+                }
+                $("#fare").attr("placeholder", '$' + parseFloat(json[0].EnterFare, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,"));
             }
         }
     });
@@ -113,6 +118,30 @@ var updateStatus = (isOpen) => {
                 //var json = JSON.parse(data);
                 console.log(data);
                 alert(data.message);
+            }
+        }
+    });
+}
+
+var getNearestIntersection = function () {
+    // get nearest interesection for bus stations
+    var url = "http://localhost:" + port + "/getIntersection/";
+    var d = "stopID=" + stopID;
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: d,
+        success: function (data) {
+
+            if (data != "") {
+                var json = JSON.parse(data);
+                console.log("data is " + json);
+                if (json[0].Intersection != "") {
+                    $("#intersection").text(json[0].Intersection);
+                } else {
+                    $("#intersection").text("N/A");
+                }
             }
         }
     });
