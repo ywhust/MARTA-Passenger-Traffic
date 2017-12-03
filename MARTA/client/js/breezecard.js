@@ -24,6 +24,10 @@ $(document).ready(function () {
         getBreezeCards(getBreezeCardSearchOption());
     });
 
+    $("#checkbox").on("click", function () {
+        getBreezeCards(getBreezeCardSearchOption());
+    });
+
 });
 
 
@@ -33,7 +37,13 @@ var $datatable;
 
 var initBreezeCardTable = function () {
     // 1 - create/init datatable
-    $datatable = $('#breezecards').DataTable();
+    $datatable = $('#breezecards').DataTable({
+        "dom": '<l<t>ip>',
+        "ordering": false,
+        select: {
+            style: 'single'
+        }
+    });
 
     // 2 - get initial data from the server
     getBreezeCards();
@@ -44,7 +54,8 @@ var getBreezeCardSearchOption = function () {
         owner: $("#owner").val(), //add constain $("breezecard").find("#owner").val()
         cardnum: $("#cardnum").val(),
         min: $("#min").val(),
-        max: $("#max").val()
+        max: $("#max").val(),
+        suspended: $("#checkbox").prop('checked'),
     };
     return opt;
 }
@@ -59,6 +70,7 @@ var getBreezeCards = function (opt) {
         d += "&cardnum=" + opt.cardnum;
         d += "&min=" + opt.min;
         d += "&max=" + opt.max;
+        d += "&suspended=" + opt.suspended;
     }
 
     $.ajax({

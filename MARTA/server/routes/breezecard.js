@@ -17,13 +17,18 @@ exports.getBreezeCard = function (req, res) {
     var cardnum = req.body.cardnum || "";
     var min = req.body.min || "";
     var max = req.body.max || "";
+    var suspended = req.body.suspended;
     var bWhere = false;
 
-     // remove white space from card number
-     cardnum = cardnum.replace(/\s/g, "");
+    // remove white space from card number
+    cardnum = cardnum.replace(/\s/g, "");
 
     // prepre sql statement
-    var sSql = "SELECT * FROM Breezecard";
+    if (suspended === "true") {
+        var sSql = "Select B. BreezecardNum, B.Value, IF(B.BreezecardNum not in (select BreezecardNum from Conflict), B.BelongsTo, 'Suspended') AS BelongsTo from Breezecard AS B";
+    } else {
+        var sSql = "SELECT * FROM Breezecard";
+    }
 
     // prepare sql statement
     if (owner != "") {
@@ -70,6 +75,16 @@ exports.getBreezeCard = function (req, res) {
 
         sSql += " " + col_value + "<=" + max;
     }
+    console.log(suspended);
+    if (suspended == undefined || suspended === "false") {
+        if (!bWhere) {
+            bWhere = true;
+            sSql += " where";
+        }
+        else
+            sSql += " and";
+        sSql += " BreezecardNum not in (select BreezecardNum from Conflict)";
+    }
 
     sSql += ";";
 
@@ -77,7 +92,7 @@ exports.getBreezeCard = function (req, res) {
     console.log(sSql);
     db.query(sSql, function (err, rows, fields) {
         if (err) {
-            console.log("error ocurred",err);
+            console.log("error ocurred", err);
             res.send({
                 "code": 400,
                 "failed": "error ocurred"
@@ -88,7 +103,7 @@ exports.getBreezeCard = function (req, res) {
             res.send("").end();
         }
         else {
-            console.log(rows); // results contains rows returned by server
+            // console.log(rows); // results contains rows returned by server
             var json = JSON.stringify(rows);
             res.send(json).end();
         }
