@@ -10,6 +10,7 @@ const manageCards     = require('./manageCards');
 const suspendedCards  = require('./suspendedCards');
 const stationDetail   = require('./stationDetail');
 const passenger       = require('./passengerBC');
+const breezecard      = require('./breezecard');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -39,6 +40,7 @@ router.post('/getStation/:id/updateFare', stationDetail.updateFare);
 router.post('/getStation/:id/updateStatus', stationDetail.updateStatus);
 router.post('/createStation', stationDetail.createStation);
 router.post('/getIntersection', stationDetail.getIntersection);
+router.post('/createIntersection', stationDetail.createIntersection);
 
 router.post('/getBreezeCardNums', passenger.getBreezeCardNums);
 router.post('/getStation', passenger.getStation);
@@ -47,6 +49,13 @@ router.post('/endTrip', passenger.endTrip);
 router.post('/checkForNull', passenger.checkForNull);
 router.post('/subtractBalance', passenger.subtractBalance);
 router.post('/getNewStations', passenger.getNewStations);
+
+router.post('/getBreezeCard', breezecard.getBreezeCard);
+router.post('/updateBreezecardValue', breezecard.updateBCValue);
+router.post('/deleteFromConflict', breezecard.deleteFromConflict);
+router.post('/updateOwner', breezecard.updateOwner);
+router.post('/checkPrevious', breezecard.checkPrevious);
+router.post('/generateNewCard', breezecard.generateNewCard);
 
 
 module.exports = router;

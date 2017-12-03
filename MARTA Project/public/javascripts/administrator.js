@@ -9,7 +9,7 @@ $(document).ready(function () {
     })
 
     $('#BCM').on('click', () => {
-        window.location.href = '/stationsListing.html';
+        window.location.href = '/breezecard.html';
     })
 
     $('#PFR').on('click', () => {
