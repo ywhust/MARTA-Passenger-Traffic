@@ -20,10 +20,13 @@ exports.getBreezecards = function(req, res) {
 exports.removeBreezecard = function(req, res) {
     var belongsTo = req.body.belongsTo;
     var breezecardNum = req.body.breezecardNum;
-    db.query('UPDATE Breezecard SET BelongsTo = NULL WHERE BreezecardNum = ?',
-        breezecardNum, function(err, rows, fields) {
-            getCardsInfo(req, res, belongsTo);
-        });
+    var sql = `UPDATE Breezecard SET BelongsTo = NULL
+               WHERE BreezecardNum = ? AND
+                   (BreezecardNum NOT IN (SELECT BreezecardNum FROM Trip) OR
+                   (SELECT EndsAt FROM Trip WHERE BreezecardNum = ?) IS NOT NULL);`;
+    db.query(sql, [breezecardNum, breezecardNum], function(err, rows, fields) {
+        getCardsInfo(req, res, belongsTo);
+    });
 }
 
 exports.addBreezecard = function(req, res) {
