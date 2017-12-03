@@ -175,7 +175,7 @@ exports.createStation = function (req, res) {
     //prepre sql statement
     var sSql = "Insert into Station(StopID, Name, EnterFare, ClosedStatus, IsTrain) ";
     sSql += "Values('" + stopid + "', '" + name + "', " + fare + ", ";
-    sSql += isTrain + ", " + closedstatus + ")";
+    sSql += closedstatus + ", " + isTrain + ")";
 
 
 
