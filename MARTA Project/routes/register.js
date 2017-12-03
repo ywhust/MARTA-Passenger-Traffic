@@ -12,7 +12,7 @@ function randomString(length, chars) {
 
 // generate a breezecard number
 function getNewCard(username) {
-    card_num = randomString(16, '0123456789');
+    var card_num = randomString(16, '0123456789');
     db.query('SELECT * FROM Breezecard WHERE BreezecardNum = ?',
         card_num, function(err, rows, fields) {
             if (rows.length > 0) {
@@ -74,7 +74,9 @@ exports.register = function(req, res) {
                     if (user.use_exist_breezecard) {
                         db.query('SELECT * FROM Breezecard WHERE BreezecardNum = ?',
                             user.breezecard_num, function(err, rows, fields) {
-                                if (rows.length > 0 && rows[0].BelongsTo != null) {
+                                if (rows.length == 0) {
+                                    getNewCard(user.username);
+                                } else if (rows.length > 0 && rows[0].BelongsTo != null) {
                                     db.query(
                                         `INSERT INTO Conflict (Username, BreezecardNum) VALUE (?, ?)`,
                                         [user.username, user.breezecard_num],
