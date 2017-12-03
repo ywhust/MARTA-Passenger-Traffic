@@ -170,12 +170,14 @@ exports.createStation = function (req, res) {
     var fare = req.body.fare;
     var isTrain = req.body.isTrain;
     var closedstatus = req.body.closedstatus;
+    var intersection = req.body.intersection;
+    console.log("test");
 
 
     //prepre sql statement
     var sSql = "Insert into Station(StopID, Name, EnterFare, ClosedStatus, IsTrain) ";
     sSql += "Values('" + stopid + "', '" + name + "', " + fare + ", ";
-    sSql += isTrain + ", " + closedstatus + ")";
+    sSql += closedstatus + ", " + isTrain + ")";
 
 
 
@@ -183,15 +185,60 @@ exports.createStation = function (req, res) {
     db.query(sSql, function (err, rows, fields) {
 
         if (typeof rows == 'undefined') {
-            console.log(err.sqlMessage);
+            console.log(err.message);
             console.log("no matches found");
-
-            res.send("").end();
+            res.send({
+                "message": err.message
+            }).end();
         }
         else {
-
-            res.send("New Station created!").end();
+            res.send({
+                "message": "Station added!",
+                sql: sSql
+            }).end();
             return;
         }
     });
 }
+
+exports.createIntersection = function (req, res) {
+    
+        // check data type
+        if (typeof req.body == 'undefined') {
+            res.send({
+                "code": 200,
+                "statusCode": "No parameter found",
+                "success": "No parameter found"
+            }).end();
+            return;
+        }
+
+        var stopid = req.body.StopID;
+        var intersection = req.body.intersection;
+
+        //prepre sql statement
+        var sSql2 = "Insert into BusStationIntersection(StopID, Intersection) ";
+        sSql2 += "Values('" + stopid + "', '" + intersection + "');";
+    
+    
+    
+        console.log(sSql2);
+        db.query(sSql2, function (err, rows, fields) {
+    
+            if (typeof rows == 'undefined') {
+                console.log("error:" + err.message);
+                console.log("no matches found");
+                res.send({
+                    "message": err.message
+                }).end();
+                return;
+            }
+            else {
+                res.send({
+                    "message": "Intersection added!",
+                    sql: sSql2
+                }).end();
+                return;
+            }
+        });
+    }

@@ -8,67 +8,80 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous"> -->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
 </head>
 
 <body>
-    <br>
-    <br>
-<div class="container">
-    <p>* means require</p>
-    <p id="errormessage" style="color:red"></p>
-    <form class="form-horizontal">
-        <div class="form-group">
-            <label for="name" class="col-sm-2 control-label">Station Name*</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="name" placeholder="name" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="stopid" class="col-sm-2 control-label">Stop ID*</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="stopid" placeholder="id" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="fare" class="col-sm-2 control-label">Enter Fare*</label>
-            <div class="col-sm-10">
-                <input type="number" class="form-control" id="fare" placeholder="$" required>
-
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <label for='stationtype' class="col-sm-2 control-label">Station Type*</label>
-                <div class="radio" id='stationtype'>
-                    <label>
-                        <input type="radio" id="bus"> Bus
-                        <br>
-                        <input type="radio" id="train"> Train
-                    </label>
+    <div class="container" style="margin-top:20px">
+        <p>* means required</p>
+        <p id="errormessage" style="color:red"></p>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Station Name*</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="name" placeholder="name" required>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group" style="margin:15px">
-            <label class="form-check-label" style="margin-bottom:10px">
-                <input id="check" type="checkbox" class="form-check-input"> Open Station*
-            </label>
-            <p>When checked, passengers can enter at this station</p>
-            <p id="openmessage"></p>
-        </div>
-
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default" id='create'>Create Station</button>
+            <div class="form-group">
+                <label for="stopid" class="col-sm-2 control-label">Stop ID*</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="stopid" placeholder="id" required>
+                </div>
             </div>
-        </div>
-    </form>
-</div>
+            <div class="form-group">
+                <label for="fare" class="col-sm-2 control-label">Enter Fare*</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="fare" placeholder="$" required>
+
+                </div>
+            </div>
+            <!-- <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <label for='stationtype' class="col-sm-2 control-label">Station Type*</label>
+                    <div class="radio" id='stationtype'>
+                        <label>
+                            <input type="radio" id="bus"> Bus
+                            <br>
+                            <input type="radio" id="train"> Train
+                        </label>
+                    </div>
+                </div>
+            </div> -->
+            <fieldset class="form-control" style="margin-bottom:20px;">
+                    <legend>Station Type</legend>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="bus" checked="checked"> Bus Station
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="intersection" class="col-xs-3 control-label">Nearest Intersection </label>
+                        <input type="text" class="form-control" id="intersection">
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="train"> Train Station
+                        </label>
+                    </div>
+                </fieldset>
+            <div class="form-group" style="margin:15px">
+                <label class="form-check-label" style="margin-bottom:10px">
+                    <input id="check" type="checkbox" class="form-check-input"> Open Station*
+                </label>
+                <p>When checked, passengers can enter at this station</p>
+                <p id="openmessage"></p>
+            </div> 
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default" id='create'>Create Station</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
     <script src="javascripts/newStation.js"></script>
 </body>
