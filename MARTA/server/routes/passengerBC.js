@@ -34,7 +34,7 @@ exports.getBreezeCardNums = function (req, res) {
             res.send("").end();
         }
         else {
-            console.log(rows); // results contains rows returned by server
+            // console.log(rows); // results contains rows returned by server
             var json = JSON.stringify(rows);
             res.send(json).end();
         }
@@ -58,14 +58,14 @@ exports.checkForNull = function (req, res) {
     //var cardnum = req.body.cardnum || "";
 
     // prepre sql statement
-    var sSql = "Select * from Station AS S where S.StopID IN (Select StartsAt from Trip AS T where T.EndsAt is NULL);";
+    var sSql = "Select M.Enterfare, T1.StartTime, T1.BreezecardNum, M.Name from Trip AS T1, (Select * from Station AS S where S.StopID IN (Select StartsAt from Trip AS T where T.EndsAt is NULL)) AS M where T1.StartsAt = M.StopID;";
 
     // if (cardnum != "") {
     //     sSql += " where BreezecardNum = '" + cardnum + "';";
     // }
 
     // search breeze card table based on owner
-    console.log(sSql);
+    //console.log(sSql);
     db.query(sSql, function (err, rows, fields) {
 
         if (typeof rows == 'undefined') {
@@ -73,7 +73,7 @@ exports.checkForNull = function (req, res) {
             res.send("").end();
         }
         else {
-            console.log(rows); // results contains rows returned by server
+            // console.log(rows); // results contains rows returned by server
             var json = JSON.stringify(rows);
             res.send(json).end();
         }
@@ -137,7 +137,7 @@ exports.getNewStations = function (req, res) {
             res.send("").end();
         }
         else {
-            console.log(rows); // results contains rows returned by server
+           // console.log(rows); // results contains rows returned by server
             var json = JSON.stringify(rows);
             res.send(json).end();
         }

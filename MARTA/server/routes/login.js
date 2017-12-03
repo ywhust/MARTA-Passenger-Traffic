@@ -1,18 +1,14 @@
-const db   = require('../dbconnection');
-const md5  = require ('md5');
+const db = require('../dbconnection');
+const md5 = require('md5');
 const rmd5 = require('reverse-md5');
 
-var user = {  // test user
-    name: "Tony",
-    password: "test"
-}
 
 // handler for user login
 exports.login = function (req, res) {
     console.log("req", req.body);
 
     var name = req.body.username;
-    var passwd = req.body.password; 
+    var passwd = req.body.password;
     var password = md5(passwd); // md5 hash password
 
     // init session
@@ -29,7 +25,7 @@ exports.login = function (req, res) {
     console.log(sSql);
     db.query(sSql, function (error, results, fields) {
         if (error) {
-            console.log("error ocurred",error);
+            console.log("error ocurred", error);
             res.send({
                 "code": 400,
                 "failed": "error ocurred"
@@ -43,8 +39,12 @@ exports.login = function (req, res) {
                     "isAdmin": results[0].IsAdmin,
                     "message": "login sucessfully"
                 }).end();
+                req.session.name = name;
+                req.session.authenticated = true;
+                req.session.IsAdmin = results[0].IsAdmin;
+                global.session = req.session;
             }
-            else{
+            else {
                 res.send({
                     "code": 200,
                     "statusCode": "FAIL",

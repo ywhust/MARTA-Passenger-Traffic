@@ -18,7 +18,7 @@ const auth = require("./auth");
 /*
 db.connect(function(err) {
     if (err) throw err;
-    console.log("DB Connected!");
+    console.log("DB Connected!"); 
   });
 */
 

@@ -139,6 +139,8 @@ var port = 4000; // server.js listening port
 var $datatable;
 
 var initCheck = function () {
+    
+
     // get breeze cards based on a given owner (wild card search)
     var url = "http://localhost:" + port + "/checkForNull";
     //var d = //include username of user currently logged on
@@ -154,13 +156,26 @@ var initCheck = function () {
 
                 $("#start").hide();
                 $("#progress").show();
+                var sel2 = json[0].Name + " - $" + json[0].Enterfare;
+                $("#sel2").val(sel2);
+
+
                 $("#sel2").prop('disabled', 'disabled');
-                $("#sel2").val(json[0].Name
-                    + " - $" + json[0].EnterFare);
+                $("#sel1").val(json[0].BreezecardNum);
                 $("#end").show();
+                tripCard = $("#sel1").val();
+                var today = new Date(json[0].StartTime);
+                var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                var dateTime = date + ' ' + time;
+                tripTime = dateTime;
             }
+        },
+        complete: function (data) {
+            getBalance();
         }
     });
+    //getBalance();
 }
 
 var initSelectLists = function () {
@@ -214,6 +229,7 @@ var getBalance = function () {
     var opt = {
         cardnum: $("#sel1").val(),
     };
+    console.log("cardnum:" + opt.cardnum)
     console.log("called sucessfully")
     // get breeze cards based on a given owner (wild card search)
     var url = "http://localhost:" + port + "/getBreezeCardNums";
@@ -229,6 +245,7 @@ var getBalance = function () {
         success: function (data) {
 
             if (data != "") {
+                console.log("238 balance" + data);
                 var json = JSON.parse(data);
                 //change balance label to match balance for selected breezecard
                 console.log(json[0].Value);
@@ -300,6 +317,7 @@ var getStations = function () {
         },
         complete: function (data) {
             getNewStations();
+            initCheck();
         }
     });
 }
