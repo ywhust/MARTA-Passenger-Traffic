@@ -24,7 +24,7 @@ function getNewCard(username, req=null, res=null) {
                     [card_num, 0.0, username], function(err, rows, fields) {
                         if (err) {
                             console.log("Error: " + err);
-                        } else {
+                        } else if (res != null) {
                             res.send({
                                 "code": 200,
                                 "statusCode": "OK",

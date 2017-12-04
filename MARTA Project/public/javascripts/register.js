@@ -68,7 +68,7 @@ $(document).ready(function () {
                 break;
 
             case "CONFLICT":
-                showRegisterError(result.message);
+                alert(result.message);
                 var username = result.username;
                 console.log(result.username);
                 window.location.href = `/passengerBreezecards.html?username=${username}`;
@@ -76,7 +76,7 @@ $(document).ready(function () {
 
             case "CONFLICT_AGAIN":
                 console.log(result);
-                showRegisterError(result.message);
+                alert(result.message);
                 break;
         }
     }
