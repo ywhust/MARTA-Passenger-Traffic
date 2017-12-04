@@ -24,6 +24,10 @@ $(document).ready(function () {
         window.location.href='/newStation.html';
     });
 
+    $('#home').on('click', () => {
+        window.location.href = '/administrator.html';
+    })
+
 });
 
 var $datatable = $('#stations').DataTable();

@@ -30,6 +30,10 @@ $(document).ready(function () {
     $('#to-old-btn').on('click', function() {
         assignToOldOwner(breezecard_num, new_owner, old_owner);
     });
+
+    $('#home').on('click', () => {
+        window.location.href = '/administrator.html';
+    })
 });
 
 var $datatable = $('#cards').DataTable();

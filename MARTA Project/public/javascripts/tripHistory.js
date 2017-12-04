@@ -13,6 +13,10 @@ $(document).ready(function () {
     $("#endtime").on('change', function () {
         getTripHistory(getTripHistorySearchOption());
     });
+
+    $('#back').on('click', () => {
+        window.location.href = '/passengerBreezecards.html?username=' + username;
+    })
 });
 
 var initTripHistoryTable = function () {

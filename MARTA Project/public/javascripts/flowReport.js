@@ -9,6 +9,10 @@ $(document).ready(function () {
     $("#endtime").on('change', function () {
         getFlowReport(getFlowReportSearchOption());
     });
+
+    $('#home').on('click', () => {
+        window.location.href = '/administrator.html';
+    })
 });
 
 var initFlowReportTable = function () {

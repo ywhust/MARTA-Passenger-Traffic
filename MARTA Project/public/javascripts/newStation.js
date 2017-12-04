@@ -19,6 +19,10 @@ $(document).ready(function () {
         $('#intersection').prop('disabled', false);
     });
 
+    $('#home').on('click', () => {
+        window.location.href = '/stationsListing.html';
+    })
+
     $('#create').click( () => {
         name = $('#name').val();
         stopid = $('#stopid').val();

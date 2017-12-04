@@ -1,3 +1,5 @@
+var username = String(window.location.search.split('?')[1].split('=')[1]);
+
 $(document).ready(function () {
 
     // hide error messages
@@ -12,6 +14,10 @@ $(document).ready(function () {
 
     var selectedCard;
     var selectedValue;
+
+    $('#home').on('click', () => {
+        window.location.href = '/passengerBreezecards.html?username=' + username;
+    })
 
     $('#breezecards tbody').on('click', 'tr', function() {
         if ($(this).hasClass('selected')) {

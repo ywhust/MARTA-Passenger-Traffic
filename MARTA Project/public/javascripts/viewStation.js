@@ -28,6 +28,10 @@ $(document).ready(function () {
         $('#errormessage').text('');
     });
 
+    $('#home').on('click', () => {
+        window.location.href = '/stationsListing.html';
+    })
+
     $("#check").on('click', () => {
         console.log(document.getElementById("check").checked);
         if (document.getElementById("check").checked) {

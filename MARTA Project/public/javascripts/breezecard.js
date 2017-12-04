@@ -29,6 +29,10 @@ $(document).ready(function () {
         getBreezeCards(getBreezeCardSearchOption());
     });
 
+    $('#home').on('click', () => {
+        window.location.href = '/administrator.html';
+    })
+
     $datatable.on('click', 'tr', function() {
         if ($(this).hasClass('selected')) {
             $(this).removeClass('selected');
