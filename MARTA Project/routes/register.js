@@ -11,7 +11,7 @@ function randomString(length, chars) {
 }
 
 // generate a breezecard number
-function getNewCard(username) {
+function getNewCard(username, req=null, res=null) {
     var card_num = randomString(16, '0123456789');
     db.query('SELECT * FROM Breezecard WHERE BreezecardNum = ?',
         card_num, function(err, rows, fields) {
@@ -21,7 +21,18 @@ function getNewCard(username) {
                 db.query(
                     `INSERT INTO Breezecard (BreezecardNum, Value, BelongsTo)
                     VALUES (?, ?, ?);`,
-                    [card_num, 0.0, username]);
+                    [card_num, 0.0, username], function(err, rows, fields) {
+                        if (err) {
+                            console.log("Error: " + err);
+                        } else {
+                            res.send({
+                                "code": 200,
+                                "statusCode": "OK",
+                                "message": "Register succeed!",
+                                "username": username
+                            }).end();
+                        }
+                    });
             }
         });
 }
@@ -84,7 +95,7 @@ exports.register = function(req, res) {
                         db.query('SELECT * FROM Breezecard WHERE BreezecardNum = ?',
                             user.breezecard_num, function(err, rows, fields) {
                                 if (rows.length == 0) {
-                                    getNewCard(user.username);
+                                    getNewCard(user.username, req, res);
                                 } else if (rows.length > 0 && rows[0].BelongsTo != null) {
                                     db.query(
                                         `INSERT INTO Conflict (Username, BreezecardNum) VALUE (?, ?)`,
@@ -92,25 +103,36 @@ exports.register = function(req, res) {
                                         function (err, rows, fields) {
                                             if (err) {
                                                 res.send({
-                                                    "statusCode": "CONFLICT",
+                                                    "statusCode": "CONFLICT_AGAIN",
                                                     "message": "Conflict already exist!"
                                                 });
                                             } else {
                                                 getNewCard(user.username);
                                                 res.send({
                                                     "statusCode": "CONFLICT",
-                                                    "message": "Card Conflict!"
+                                                    "message": "Card Conflict!",
+                                                    "username": user.username
                                                 });
                                             }
                                         });
                                 } else if (rows[0].BelongsTo == null) {
                                     var breezecardNum = rows[0].BreezecardNum;
                                     db.query(`UPDATE Breezecard SET BelongsTo = ? WHERE BreezecardNum = ?`,
-                                        [user.username, breezecardNum]);
+                                        [user.username, breezecardNum], function(err, rows, fields) {
+                                            if (err) {
+                                                console.log("Error: " + err);
+                                            } else {
+                                                res.send({
+                                                    "code": 200,
+                                                    "statusCode": "OK",
+                                                    "message": "Register succeed!"
+                                                }).end();
+                                            }
+                                        });
                                 }
                             });
                     } else {
-                        getNewCard(user.username);
+                        getNewCard(user.username, req, res);
                     }
                 });
         });

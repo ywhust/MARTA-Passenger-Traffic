@@ -5,6 +5,14 @@ $(document).ready(function () {
     $("#password-err").hide();
     $("#card-err").hide();
 
+    $("#use-exist").on('change', function() {
+        if ($("#use-exist").is(":checked")) {
+            $("#breezecard_num").prop("required", "required");
+        } else {
+            $("#breezecard_num").prop("required", false);
+        }
+    });
+
     $("#register-form").submit(function (e) {
 
         e.preventDefault();
@@ -42,8 +50,11 @@ $(document).ready(function () {
     var verifyRegister = function (result) {
         switch (result.statusCode) {
             case "OK":
-                $("#register").hide();
+                // $("#register").hide();
                 // $("#passenger-div").show();
+                var username = result.username;
+                console.log(result.username);
+                window.location.href = `/passengerBreezecards.html?username=${username}`;
                 break;
 
             case "USER_NAME_OR_EMAIL_NOT_UNIQUE":
@@ -57,6 +68,14 @@ $(document).ready(function () {
                 break;
 
             case "CONFLICT":
+                showRegisterError(result.message);
+                var username = result.username;
+                console.log(result.username);
+                window.location.href = `/passengerBreezecards.html?username=${username}`;
+                break;
+
+            case "CONFLICT_AGAIN":
+                console.log(result);
                 showRegisterError(result.message);
                 break;
         }
