@@ -16,6 +16,16 @@ exports.login = function(req, res) {
 
     db.query(sql, user.username, function(err, rows, fields) {
 
+        if (rows.length == 0) {
+            res.send({
+                "code": 200,
+                "statusCode": "NO_USER",
+                "success": "user does not exist"
+            }).end();
+            console.log("user does not exist");
+            return;
+        }
+
         var username = rows[0].Username;
         var password = rows[0].Password;
         var isAdmin = rows[0].IsAdmin;
@@ -43,13 +53,6 @@ exports.login = function(req, res) {
                 "success": "wrong password"
             });
             console.log("wrong password");
-        } else {
-            res.send({
-                "code": 200,
-                "statusCode": "NO_USER",
-                "success": "user does not exist"
-            });
-            console.log("user does not exist");
         }
         res.end();
     });

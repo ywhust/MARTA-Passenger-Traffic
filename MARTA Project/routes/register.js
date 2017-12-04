@@ -47,10 +47,19 @@ exports.register = function(req, res) {
         return;
     }
 
+    if (user.use_exist_breezecard && user.breezecard_num.length != 16) {
+        res.send({
+            "code": 200,
+            "statusCode": "PASSWORD_DOES_NOT_MATCH",
+            "message": "Breeze card number should be 16 digits."
+        }).end();
+        return;
+    }
+
     console.log(user);
 
     // check if the username and email have been used
-    db.query('SELECT * FROM Passenger WHERE Username = ?', user.username,
+    db.query('SELECT * FROM Passenger WHERE Username = ? OR Email = ?', [user.username, user.email],
         function(err, rows, fields) {
             if (rows.length > 0) {
                 res.send({
@@ -81,7 +90,18 @@ exports.register = function(req, res) {
                                         `INSERT INTO Conflict (Username, BreezecardNum) VALUE (?, ?)`,
                                         [user.username, user.breezecard_num],
                                         function (err, rows, fields) {
-                                            getNewCard(user.username);
+                                            if (err) {
+                                                res.send({
+                                                    "statusCode": "CONFLICT",
+                                                    "message": "Conflict already exist!"
+                                                });
+                                            } else {
+                                                getNewCard(user.username);
+                                                res.send({
+                                                    "statusCode": "CONFLICT",
+                                                    "message": "Card Conflict!"
+                                                });
+                                            }
                                         });
                                 } else if (rows[0].BelongsTo == null) {
                                     var breezecardNum = rows[0].BreezecardNum;

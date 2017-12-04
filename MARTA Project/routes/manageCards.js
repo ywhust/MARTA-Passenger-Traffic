@@ -57,6 +57,13 @@ exports.addBreezecard = function(req, res) {
                 [belongsTo, cards_list[index]], function(err, rows, fields) {
                     if (err) {
                         console.log('Conflict already exist.');
+                        res.send({
+                            "message": "Conflict already exist!"
+                        });
+                    } else {
+                        res.send({
+                            "message": "Conflict!"
+                        });
                     }
                 });
         } else if (index > -1 && users_list[index] == null) {

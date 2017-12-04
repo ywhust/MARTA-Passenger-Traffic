@@ -48,8 +48,16 @@ var verifySignIn = function (result) {
             }
             break;
 
-        case "FAILED":
+        case "WRONG_PASSWORD":
             showSignInError("Invalid username or password"); // show error message
+            console.log(result);
+            $("#username").text("");
+            $("password").text("");
+            break;
+
+        case "NO_USER":
+            showSignInError("User does not exist"); // show error message
+            console.log(result);
             $("#username").text("");
             $("password").text("");
             break;

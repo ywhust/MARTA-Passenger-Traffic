@@ -19,6 +19,15 @@ $(document).ready(function () {
     //check to see if the passenger is already in a trip
     // initCheck();
 
+    $("#sel1").on('change', function() {
+        var current_card = $("#sel1").val();
+        if (tripCard != current_card) {
+            $("#end").prop("disabled", "disabled");
+        } else {
+            $("#end").prop("disabled", false);
+        }
+    });
+
     //logout button
     $("#logout").click(function () {
 

@@ -46,8 +46,18 @@ $(document).ready(function () {
                 // $("#passenger-div").show();
                 break;
 
-            case "FAIL":
+            case "USER_NAME_OR_EMAIL_NOT_UNIQUE":
+                console.log(result);
                 showRegisterError(result.message); // show error messag
+                break;
+
+            case "PASSWORD_DOES_NOT_MATCH":
+                console.log(result);
+                showRegisterError(result.message);
+                break;
+
+            case "CONFLICT":
+                showRegisterError(result.message);
                 break;
         }
     }

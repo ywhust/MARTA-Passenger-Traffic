@@ -127,7 +127,12 @@ var addBreezecard = function(breezecardNum) {
         type: 'POST',
         data: data,
         success: function(result) {
-            createDataTable(result);
+            if (result.message != undefined) {
+                alert(result.message);
+            } else {
+                createDataTable(result);
+            }
+            // createDataTable(result);
         }
     });
 }
