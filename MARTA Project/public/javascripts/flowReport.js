@@ -12,7 +12,9 @@ $(document).ready(function () {
 });
 
 var initFlowReportTable = function () {
-    $datatable = $('#report').DataTable();
+    $datatable = $('#report').DataTable({
+        "dom": '<l<t>ip>',
+    });
     getFlowReport();
 }
 

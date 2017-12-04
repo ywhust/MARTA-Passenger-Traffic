@@ -19,7 +19,7 @@ $(document).ready(function () {
     //check to see if the passenger is already in a trip
     // initCheck();
 
-    $("#sel1").on('change', function() {
+    $("#sel1").on('change', function () {
         var current_card = $("#sel1").val();
         if (tripCard != current_card) {
             $("#end").prop("disabled", "disabled");
@@ -41,11 +41,11 @@ $(document).ready(function () {
         window.location.href = '/index.html';
     });
 
-    $("#manage-card-btn").click(function() {
+    $("#manage-card-btn").click(function () {
         window.location.href = '/manageCards.html?username=' + username;
     });
 
-    $("#view-trip-btn").click(function() {
+    $("#view-trip-btn").click(function () {
         console.log(1);
         window.location.href = '/tripHistory.html?username=' + username;
     });
@@ -74,6 +74,12 @@ $(document).ready(function () {
         var d = "cardnum=" + opt.cardnum + "&startsAt=" + opt.startsAt
             + "&tripFare=" + opt.tripFare + "&startTime=" + opt.startTime;
 
+        var balance = Number($("#balance").text()) - Number(opt.tripFare);
+
+        if (balance < 0) {
+            alert("you do not have enough balance to complete the trip. Trip start failed.");
+            return;
+        }
         $.ajax({
             url: url,
             data: d,
@@ -90,12 +96,12 @@ $(document).ready(function () {
                         $("#progress").show();
                         $("#sel2").prop('disabled', 'disabled');
                         $("#end").show();
+                        $("#end").prop('disabled', false);
                     }
                 }
             },
         });
 
-        var balance = Number($("#balance").text()) - Number(opt.tripFare);
         var url2 = "http://localhost:" + port + "/subtractBalance";
         var d2 = "cardnum=" + opt.cardnum + "&tripFare=" + opt.tripFare + "&balance="
             + balance;

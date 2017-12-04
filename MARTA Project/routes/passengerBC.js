@@ -282,7 +282,7 @@ exports.subtractBalance = function (req, res) {
         }).end();
         return;
     }
-
+    
     // prepre sql statement - inserting the new trip into the trip table
     var sSql = "UPDATE Breezecard SET Value = " + trip.balance
         + " WHERE BreezecardNum = '" + trip.cardnum + "';";

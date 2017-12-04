@@ -4,6 +4,16 @@
     }
 }
 
+body{
+	font-family: Cambria, Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+	/*background: #fff url(../images/bg.jpg) repeat top left;*/
+	/*background-image: url("./images/marta-midtown-1.png");*/
+	font-weight: 400;
+	font-size: 15px;
+	color: #1d3c41;
+	overflow-y: scroll;
+}
+
 h1 {
     padding-top: 10px;
     padding-bottom: 10px
@@ -11,4 +21,41 @@ h1 {
 
 .container {
     margin-top: 30px;
+}
+
+.panel {
+    margin: auto;
+    width: 96%;
+    margin-top: 30px !important;
+    border-radius: 10px !important;
+    padding: 5px !important;
+    background: rgba(102, 168, 235, 0.5)!important;
+
+}
+
+.panel-admin{
+     width: 60%;
+     margin: auto;
+}
+
+.panel-header h1{
+    padding: 10px !important;
+    margin-bottom: 0px !important;
+    text-align: center;
+}
+
+.panel-body{
+    text-align: center;
+    background: rgba(237, 240, 243, 0.82)!important;
+}
+
+.panel-foot {
+    text-align: center; 
+}
+.panel  button {
+    margin: 8px;
+}
+
+.form-group {
+    margin-top:10px;
 }

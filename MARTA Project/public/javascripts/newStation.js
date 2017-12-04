@@ -82,7 +82,7 @@ var createStation = () => {
         // },
         complete: function (data) {
             if (d.isTrain == 0) {
-               // createIntersection();
+               createIntersection();
             }
         }
     });

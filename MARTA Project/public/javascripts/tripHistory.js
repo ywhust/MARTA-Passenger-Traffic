@@ -16,7 +16,9 @@ $(document).ready(function () {
 });
 
 var initTripHistoryTable = function () {
-    $datatable = $('#trips').DataTable();
+    $datatable = $('#trips').DataTable({
+        "dom": '<l<t>ip>',
+    });
     getTripHistory(getTripHistorySearchOption());
 }
 
