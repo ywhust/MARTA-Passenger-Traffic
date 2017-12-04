@@ -1,75 +1,137 @@
 --User Log in
-Select * from User where Username = '?';
+SELECT * 
+FROM User
+WHERE Username = '?';
 
 --User registration
---check the User exists or not
-Select count(*) from User where Username = '?';
+--Check the User exists or not
+SELECT COUNT(*)
+FROM User 
+WHERE Username = '?';
 --if not exists;
-Insert into User(Username, Password, IsAdmin) Values('?', '?', 0);
-Insert into Passenger(Username, Email) Values('?', '?');
+INSERT INTO User(Username, Password, IsAdmin)
+VALUES('?', '?', 0);
 
---check the breezecard exists or not
-Select count(*) from Breezecard where BreezecardNum = '?';
+INSERT INTO Passenger(Username, Email)
+VALUES('?', '?');
+
+--check whether the breezecard exists or not
+SELECT COUNT(*)
+FROM Breezecard
+WHERE BreezecardNum = '?';
 --if not exist 
-Insert into Breezecard(BreezecardNum, Value, BelongsTo) values('?', 0, '?');
+INSERT INTO Breezecard(BreezecardNum, Value, BelongsTo)
+VALUES('?', 0, '?');
 --if exists but belongs to nobody
-Update Breezecard set BelongsTo = '?' where BreezecardNum = '?';
+UPDATE Breezecard
+SET BelongsTo = '?'
+WHERE BreezecardNum = '?';
 --if exists in the breezecard and already belongs to somebody 
-Insert into Conflict(Username, BreezecardNum) Values('?', '?');
-Insert into Breezecard(BreezecardNum, Value, BelongsTo) values('?', 0, '?');
+INSERT INTO Conflict(Username, BreezecardNum)
+VALUES('?', '?');
 
+--insert a new breezecard into the Breezecard table.
+INSERT INTO Breezecard(BreezecardNum, Value, BelongsTo)
+VALUES('?', 0, '?');
+
+--get all the BreezecardNum to generate a new BreezecardNum
+SELECT BreezecardNum
+FROM Breezecard;
+INSERT INTO Breezecard(BreezecardNum, Value, BelongsTo)
+VALUES('?', 0, '?');
 ----------------------------------------------------------------------------------------------
 ---------------------------------------Admin functionality------------------------------------
 ----------------------------------------------------------------------------------------------
---check out the stations
-Select * from Station;
+--query stations table
+SELECT *
+FROM Station;
 
 --view one station's detail
-Select * from Station where StopID = '?';
+SELECT * 
+FROM Station
+WHERE StopID = '?';
 
 --if the station is bus station, also display the intersection;
-Select S.StopID, S.Name, S.EnterFare, S.ClosedStatus, I.Intersection from Station as S, BusStationIntersection AS I where S.StopID = '31955' And S.StopID = I.StopID;
+SELECT S.StopID, S.Name, S.EnterFare, S.ClosedStatus, I.Intersection
+FROM Station AS S, BusStationIntersection AS I
+WHERE S.StopID = '?' And S.StopID = I.StopID;
 
 --create a station;
-Insert into Station(StopID, Name, EnterFare, ClosedStatus, IsTrain) Values(?, ?, ?, ?, ?);
+INSERT INTO Station(StopID, Name, EnterFare, ClosedStatus, IsTrain)
+VALUES(?, ?, ?, ?, ?);
 
 --if it's a bus station, optionally insert its intersection;
-Insert into BusStationIntersection(StopID, Intersection) values('?', '?');
+INSERT INTO BusStationIntersection(StopID, Intersection) 
+VALUES('?', '?');
 
 --Set Station EnterFare, Set CloseStatus;
-Update Station SET EnterFare = '?' where Name = '?' And IsTrain = '?';
-Update Station SET ClosedStatus = '?' where Name = '?';
+UPDATE Station 
+SET EnterFare = '?' 
+WHERE StopID = '?';
+
+UPDATE Station 
+SET ClosedStatus = '?' 
+WHERE StopID = '?';
 
 --Suspend a breeze card;
-Insert into Conflict(Username, BreezecardNum) values('?', '?');
+--INSERT INTO Conflict(Username, BreezecardNum)
+--VALUES('?', '?');
 
 --Transfer a breezecard
-Delete from Conflict where BreezecardNum = '?';
+DELETE FROM Conflict 
+WHERE BreezecardNum = '?';
 
 --if assigns to a new owner;
-Update Breezecard set BelongsTo = '?' where BreezecardNum = '?';
+UPDATE Breezecard
+SET BelongsTo = '?' 
+WHERE BreezecardNum = '?';
 
 --check whether previous owner has no card;
-Select count(*) from Breezecard where BelongsTo = '?';
+SELECT COUNT(*)
+FROM Breezecard 
+WHERE BelongsTo = '?';
 
 --if the assignment of one card result in previous owner has no card;
-Insert into Breezecard(BreezecardNum, Value, BelongsTo) Values('?', '?', '?');
+INSERT INTO Breezecard(BreezecardNum, Value, BelongsTo)
+VALUES('?', '?', '?');
 
 --add values to the breezecard;
-Update Breezecard set Value = '?' where BreezecardNum = '?';
+UPDATE Breezecard
+SET Value = '?'
+WHERE BreezecardNum = '?';
 
 --View all of the Breeze Cards in the database.
-Select * from Breezecard;
+SELECT *
+FROM Breezecard;
 --View the filtered Breeze Cards;
-Select * from Breezecard where BreezecardNum = '?' And BelongsTo = '?' And Value >= ? And Value <= ?;
+SELECT * 
+FROM Breezecard
+WHERE BreezecardNum = '?' AND BelongsTo = '?' AND Value >= ? AND Value <= ?;
 
 --check breezecard info if breezecard in the conflict then BelongsTo show suspended, add filter.
-Select B.BreezecardNum, B.Value, IF(B.BreezecardNum not in (select BreezecardNum from Conflict), B.BelongsTo, 'Suspended') AS BelongsTo from Breezecard AS B where B.BreezecardNum = '?' And B.BelongsTo = '?' And B.Value >= ? And B.Value <= ?;;
+SELECT B.BreezecardNum, B.Value, IF(B.BreezecardNum NOT IN (SELECT BreezecardNum FROM Conflict), B.BelongsTo, 'Suspended') AS BelongsTo
+FROM Breezecard AS B
+WHERE B.BreezecardNum = '?' AND B.BelongsTo = '?' AND B.Value >= ? AND B.Value <= ?;
 
 --View passenger flow report;
-Select IFNULL(M.StartsAt, M.EndsAt) AS StartsAt, M.passengersIn, M.passengersOut, (M.passengersIn - M.passengersOut) AS Flow, M.Tripfare from (Select X.StartsAt, X.EndsAt, IFNULL(X.passengersIn, 0) AS passengersIn, IFNULL(X.passengersOut, 0) AS passengersOut, IFNULL(X.Tripfare, 0) AS Tripfare from (Select * from (Select StartsAt, count(*) AS passengersIn, SUM(Tripfare) AS Tripfare from Trip where StartTime >= '2017-10-31 09:30:00' And StartTime <= '2017-11-05 04:21:49' Group by StartsAt) AS S Left JOIN (Select EndsAt, count(*) AS passengersOut from Trip where StartTime >= '2017-10-31 09:30:00' And StartTime <= '2017-11-05 04:21:49' Group by EndsAt) AS E on S.StartsAt = E.EndsAt
+SELECT IFNULL(M.StartsAt, M.EndsAt) AS StartsAt, M.passengersIn, M.passengersOut, (M.passengersIn - M.passengersOut) AS Flow, M.Tripfare
+FROM (
+	SELECT X.StartsAt, X.EndsAt, IFNULL(X.passengersIn, 0) AS passengersIn, IFNULL(X.passengersOut, 0) AS passengersOut, IFNULL(X.Tripfare, 0) AS Tripfare
+	FROM (SELECT* FROM (SELECT StartsAt, count(*) AS passengersIn, SUM(Tripfare) AS Tripfare FROM Trip WHERE StartTime >= '2017-10-31 09:30:00' AND StartTime <= '2017-11-05 04:21:49' GROUP BY StartsAt) AS S LEFT JOIN (SELECT EndsAt, count(*) AS passengersOut FROM Trip WHERE StartTime >= '2017-10-31 09:30:00' AND StartTime <= '2017-11-05 04:21:49' GROUP BY EndsAt) AS E ON S.StartsAt = E.EndsAt
 UNION
-Select * from (Select StartsAt, count(*) AS passengersIn, SUM(Tripfare) AS Tripfare from Trip where StartTime >= '2017-10-31 09:30:00' And StartTime <= '2017-11-05 04:21:49' Group by StartsAt) AS S RIGHT JOIN (Select EndsAt, count(*) AS passengersOut from Trip where StartTime >= '2017-10-31 09:30:00' And StartTime <= '2017-11-05 04:21:49' Group by EndsAt) AS E on S.StartsAt = E.EndsAt) AS X where X.StartsAt is not NULL or X.EndsAt is not Null) AS M;
+SELECT * 
+FROM (
+	SELECT StartsAt, COUNT(*) AS passengersIn, SUM(Tripfare) AS Tripfare
+	FROM Trip 
+	WHERE StartTime >= '2017-10-31 09:30:00' AND StartTime <= '2017-11-05 04:21:49'
+	GROUP BY StartsAt) AS S
+RIGHT JOIN (
+	SELECT EndsAt, count(*) AS passengersOut
+	FROM Trip 
+	WHERE StartTime >= '2017-10-31 09:30:00' AND StartTime <= '2017-11-05 04:21:49'
+	GROUP BY EndsAt) AS E 
+ON S.StartsAt = E.EndsAt) AS X
+	WHERE X.StartsAt IS NOT NULL OR X.EndsAt IS NOT NULL) AS M;
 ---------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------
 
@@ -77,57 +139,95 @@ Select * from (Select StartsAt, count(*) AS passengersIn, SUM(Tripfare) AS Tripf
 ------------------------------------Passenger Functionality----------------------------------
 ---------------------------------------------------------------------------------------------
 --show unlocked breezecard infomation for a specific user;
-Select * from Breezecard AS B where B.BreezecardNum not in (select BreezecardNum from Conflict) And B.BelongsTo = '?';
+SELECT * 
+FROM Breezecard AS B
+WHERE B.BreezecardNum NOT IN (
+	SELECT BreezecardNum 
+	FROM Conflict) AND B.BelongsTo = '?';
 
---If no breezecard is in the trip
 --show balance of a particular card;
-Select Value from Breezecard where BreezecardNum = '?';
+SELECT Value 
+FROM Breezecard 
+WHERE BreezecardNum = '?';
 
---if one breezecard is in the trip
+--if the user is in a trip,
 --Select the user's breezecard which is still in trip;
-Select M.Enterfare, T1.StartTime, T1.BreezecardNum, M.Name from Trip AS T1, (Select * from Station AS S where S.StopID IN (Select StartsAt from Trip AS T where T.EndsAt is NULL)) AS M where T1.StartsAt = M.StopID and T1.BreezecardNum IN (Select BreezecardNum from Breezecard where BelongsTo = '?');
+SELECT M.Enterfare, T1.StartTime, T1.BreezecardNum, M.Name
+FROM Trip AS T1, (SELECT * 
+	FROM Station AS S 
+	WHERE S.StopID IN (SELECT StartsAt FROM Trip AS T WHERE T.EndsAt is NULL)) AS M
+WHERE T1.StartsAt = M.StopID AND T1.BreezecardNum IN (SELECT BreezecardNum FROM Breezecard WHERE BelongsTo = '?');
 
 --if no breezecard is in the trip
 --Start a trip;
 --show the enterfare of one Station;
-Select EnterFare from Station where Name = '?';
+SELECT EnterFare
+FROM Station
+WHERE Name = '?';
 --if the breezecard balance is greater than the enter fare of one station
 --Update Breezecard value;
-Update Breezecard SET Value = '?' where BreezecardNum = '?';
+UPDATE Breezecard
+SET Value = '?' 
+WHERE BreezecardNum = '?';
 
 --Add a Trip and Assign a start station;
-Insert into Trip(Tripfare, StartTime, BreezecardNum, StartsAt) VALUES (?, '?', '?', (Select StopID from Station where Name = '?'));
+INSERT INTO Trip(Tripfare, StartTime, BreezecardNum, StartsAt)
+VALUES (?, '?', '?', (SELECT StopID FROM Station WHERE Name = '?'));
 
 --if log back in one breeze card is still on the trip, then show the infomation
 --find the start station's name and enterfare, trip's start time and breezecard number.
-Select T1.Tripfare, T1.StartTime, T1.BreezecardNum, M.Name from Trip AS T1, (Select * from Station AS S where S.StopID IN (Select StartsAt from Trip AS T where T.EndsAt is NULL)) AS M where T1.StartsAt = M.StopID;
+SELECT T1.Tripfare, T1.StartTime, T1.BreezecardNum, M.Name
+FROM Trip AS T1, (
+	SELECT * 
+	FROM Station AS S 
+	WHERE S.StopID IN (SELECT StartsAt FROM Trip AS T WHERE T.EndsAt is NULL)) AS M WHERE T1.StartsAt = M.StopID;
 
 --To end one breezecard's trip;
 --get a station whose type is same to the start station;
-Select Name from Station AS S where S.IsTrain = (Select IsTrain FROM Station AS C where C.Name = '?');
+SELECT Name 
+FROM Station AS S 
+WHERE S.IsTrain = (
+	SELECT IsTrain FROM Station AS C 
+	WHERE C.Name = '?');
 
 --End one breezecard's trip;
-Update Trip set EndsAt = (Select StopID from Station where Name = '?') where BreezecardNum = '?' And StartTime = '?';
+UPDATE Trip 
+SET EndsAt = (SELECT StopID 
+	FROM Station 
+	WHERE Name = '?') 
+WHERE BreezecardNum = '?' AND StartTime = '?';
 
 --Manage Breeze Card
 --show unlocked breezecard infomation for a specific user;
-Select * from Breezecard AS B where B.BreezecardNum not in (select BreezecardNum from Conflict) And B.BelongsTo = '?';
+SELECT * 
+FROM Breezecard AS B 
+WHERE B.BreezecardNum NOT IN (SELECT BreezecardNum FROM Conflict) AND B.BelongsTo = '?';
 
 --Add one card to a user
 --check the breezecard exists or not
-Select count(*) from Breezecard where BreezecardNum = '?';
+SELECT COUNT(*)
+FROM Breezecard
+WHERE BreezecardNum = '?';
 --if not exist 
-Insert into Breezecard(BreezecardNum, Value, BelongsTo) values('?', 0, '?');
+INSERT INTO Breezecard(BreezecardNum, Value, BelongsTo)
+VALUES('?', 0, '?');
 --if exists but belongs to nobody
-Update Breezecard set BelongsTo = '?' where BreezecardNum = '?';
+UPDATE Breezecard
+SET BelongsTo = '?' 
+WHERE BreezecardNum = '?';
 --if exists in the breezecard and already belongs to somebody 
-Insert into Conflict(Username, BreezecardNum) Values('?', '?');
+INSERT INTO Conflict(Username, BreezecardNum)
+VALUES('?', '?');
 
 --Remove one breezecard from a user, which is not in the trip;
-Update Breezecard set BelongsTo = NULL WHERE BreezecardNum = '?' AND (BreezecardNum NOT IN (SELECT BreezecardNum FROM Trip) OR (SELECT EndsAt FROM Trip WHERE BreezecardNum = '?') IS NOT NULL);
+UPDATE Breezecard
+SET BelongsTo = NULL
+WHERE BreezecardNum = '?' AND (BreezecardNum NOT IN (SELECT BreezecardNum FROM Trip) OR (SELECT EndsAt FROM Trip WHERE BreezecardNum = '?') IS NOT NULL);
 
 --add value to one breezecard
-Update Breezecard set Value = ? where BreezecardNum = '?';
+UPDATE Breezecard
+SET Value = ?
+WHERE BreezecardNum = '?';
 
 --View Trip History;
 SELECT I.StartTime, I.Name AS Source, S.Name AS Destination, I.Tripfare, I.BreezecardNum 
