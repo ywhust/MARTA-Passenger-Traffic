@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6 lt8"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7 lt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8 lt8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="UTF-8" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
+    <title>MARTA PROJECT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login and Registration Form with HTML5 and CSS3" />
+    <meta name="keywords" content="html5, css3, form, switch, animation, :target, pseudo-class" />
+    <meta name="author" content="Codrops" />
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/demo.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/login.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/passenger.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/animate-custom.css" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1></h1>
+        </header>
+        <section>
+            <div id="container">
+                <a class="hiddenanchor" id="toregister"></a>
+                <a class="hiddenanchor" id="tologin"></a>
+                <div id="wrapper">
+
+
+                    <div id="login" class="animate form">
+                        <form id="sign-in-form" autocomplete="on">
+                            <h1>Log In</h1>
+                            <p>
+                                <label for="username" class="uname" data-icon="u">Username </label>
+                                <input id="username" name="username" required="required" type="text" placeholder="username" />
+                            </p>
+                            <p>
+                                <label for="password" class="youpasswd" data-icon="p">Password </label>
+                                <input id="password" name="password" required="required" type="password" placeholder="password" />
+                            </p>
+                            <div id="signin-error-div" class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9" style="color:#ff0000">
+                                    <span id="error-msg">Invalid username or password</span>
+                                </div>
+                            </div>
+                            <p class="login button">
+                                <input id="sign-in" type="submit" value="Login" />
+                            </p>
+
+                            <p>
+                                Not a member yet ?
+                                <a href="#toregister" class="register">Register</a>
+                            </p>
+                        </form>
+                    </div>
+
+
+
+                    <div id="register" class="animate form">
+                        <form id="register-form" autocomplete="on">
+                            <h1>New Passenger Registration</h1>
+                            <p>
+                                <label for="username" class="uname" data-icon="u">Username</label>
+                                <input id="username" name="username" required="required" type="text" placeholder="username" />
+                            </p>
+                            <p>
+                                <label for="email" class="youmail" data-icon="e">Email</label>
+                                <input id="email" name="email" required="required" type="email" placeholder="email" />
+                            </p>
+                            <p>
+                                <label for="password" class="youpasswd" data-icon="p">Password </label>
+                                <input id="password" name="password" required="required" type="password" placeholder="password" />
+                            </p>
+                            <p>
+                                <label for="password_confirm" class="youpasswd" data-icon="p">Confirm Password </label>
+                                <input id="password_confirm" name="confirm_password" required="required" type="password" placeholder="confirm password"
+                                />
+                            </p>
+                            <div id="breezecard_opt_div">
+                                <div>
+                                    <input type="checkbox" name="get_new_breezecard">Get a new Breeze Card</input>
+                                </div>
+                                <div>
+                                    <input type="checkbox" name="use_exist_breezecard" checked>Use my existing Breeze Card</input>
+                                </div>
+                                <div>
+                                    <label for="breeze_card_opt" class="breezecardnum">Breeze Card Number</label>
+                                    <input id="breezecard_num" name="breezecard_num" required="required" type="breezecard_num" placeholder="16 digit number" />
+                                </div>
+                            </div>
+                            <div id="register-error-div" class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9" style="color:#ff0000">
+                                    <span id="error-msg">Invalid username or password</span>
+                                </div>
+                            </div>
+                            <p class="signin button">
+                                <input type="submit" value="Create Account" />
+                            </p>
+                            <p>
+                                Already a member ?
+                                <a href="#tologin" class="login">Sign In</a>
+                            </p>
+                        </form>
+                    </div>
+
+
+
+                    <div id="passenger-div" class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">Welcome to MARTA</h2>
+                        </div>
+                        <div class="panel-body">
+
+                            <div id="lw-div" class="form-group">
+                                <span class="col-xs-3 col-sm-3">Breeze Card</span>
+                                <div class="btn-group">
+                                    <button id="lw-bt" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                        123456789101112345
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#">123456789101112345</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">2</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">3</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">4</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">5</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">6</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="javascripts/login.js"></script>
+    <script src="javascripts/register.js"></script>
+    <script src="javascripts/passenger.js"></script>
+</body>
+
+</html>
